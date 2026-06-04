@@ -156,16 +156,17 @@ def slide_toc(slide, n, t):
     items_left = [
         ('Ⅰ.', '개요 — 맹자란 무엇인가'),
         ('Ⅱ.', '맹자의 생애 — 어머니와 한 철학자'),
-        ('Ⅲ.', '제자와 논적들'),
-        ('Ⅳ.', '7편 14장의 구조'),
+        ('Ⅲ.', '제자와 논적들 · 사기 열전'),
+        ('Ⅳ.', '7편 14장의 구조 · 오륜(五倫)'),
         ('Ⅴ.', '7편 14장 깊이 읽기'),
+        ('Ⅵ.', '핵심 사상 9기둥'),
     ]
     items_right = [
-        ('Ⅵ.', '핵심 사상 7기둥'),
         ('Ⅶ.', '맹자의 유명한 비유들'),
-        ('Ⅷ.', '명구 16선'),
-        ('Ⅸ.', '경전이 되기까지 · 동아시아 수용'),
-        ('Ⅹ.', '오늘 우리에게 · 마무리'),
+        ('Ⅷ.', '정전제 · 항산항심의 경제'),
+        ('Ⅸ.', '명구 18선'),
+        ('Ⅹ.', '동아시아 수용 · 사단칠정 논쟁'),
+        ('Ⅺ.', '오늘 우리에게 · 마무리'),
     ]
     for i, (num, txt) in enumerate(items_left):
         y = Inches(2.6 + i * 0.65)
@@ -415,6 +416,32 @@ def iii_disciples(slide, n, t):
 
 
 @S(SEC3)
+def iii_simaqian(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC3, n, t)
+    add_title(slide, '사기(史記)가 본 맹자 — 사마천의 「맹자열전」',
+              '냉정한 역사가가 그린 한 좌절한 사상가의 초상')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 『사기·맹자순경열전』 — 맹자와 순자를 한데 묶어 다룸',
+         {'font_size': 17, 'space_before': 4, 'bold': True, 'color': ACCENT}),
+        ('● 사마천의 평 — 「迂遠而闊於事情」 — 우원(迂遠)하고 일의 정세에 어둡다',
+         {'font_size': 17, 'space_before': 10, 'font_name': 'Batang'}),
+        ('     · 당시 군주의 눈으로 본 맹자 — 「현실 정치엔 통하지 않는 이상주의자」',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 그러나 사마천 자신은 맹자를 깊이 존경 — 「余讀孟子書 …  廢書而嘆」',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT, 'font_name': 'Batang'}),
+        ('     · 「맹자 책을 읽으며 책을 덮고 탄식하지 않을 수 없었다」',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 묘사한 맹자의 모습 — 「자사 문하에서 배우고 도가 통했으나 시대가 받아들이지 않음」',
+         {'font_size': 17, 'space_before': 12}),
+        ('● 「만장 등과 함께 시·서·중니의 뜻을 풀이하여 맹자 7편을 지었다」',
+         {'font_size': 16, 'space_before': 10, 'color': SUB, 'bold': True}),
+        ('● 좌절한 사상가가 7편의 책으로 1,500년 후 「아성」이 되는 역설 — 사기가 남긴 가장 깊은 메시지',
+         {'font_size': 15, 'space_before': 10, 'color': SUB}),
+    ])
+
+
+@S(SEC3)
 def iii_opponents(slide, n, t):
     set_white_background(slide)
     add_page_header(slide, SEC3, n, t)
@@ -484,6 +511,38 @@ def iv_table(slide, n, t):
                     align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
         add_textbox(slide, Inches(6.3), y, Inches(6.4), Inches(0.55),
                     desc, font_size=13, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+
+
+@S(SEC4)
+def iv_olun(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC4, n, t)
+    add_title(slide, '오륜(五倫) — 맹자가 정립한 동양 인간관계의 다섯 기둥',
+              '등문공 상편 — 「人之有道也  飽食煖衣 逸居而無敎  則近於禽獸」')
+    rows = [
+        ('父 子 有 親', '부자유친', '부모와 자식 사이엔 친(親)함이 있다',  '효(孝)의 원리'),
+        ('君 臣 有 義', '군신유의', '임금과 신하 사이엔 의(義)가 있다',     '충(忠)과 의의 통합'),
+        ('夫 婦 有 別', '부부유별', '부부 사이엔 분별(別)이 있다',         '역할의 구분과 존중'),
+        ('長 幼 有 序', '장유유서', '어른과 아이 사이엔 차례(序)가 있다',   '제(悌)의 원리'),
+        ('朋 友 有 信', '붕우유신', '벗 사이엔 믿음(信)이 있다',           '신(信)의 원리'),
+    ]
+    for i, (han, kor, body, label) in enumerate(rows):
+        y = Inches(2.3 + i * 0.85)
+        add_filled_rect(slide, Inches(0.7), y, Inches(2.6), Inches(0.7), ACCENT)
+        add_textbox(slide, Inches(0.7), y, Inches(2.6), Inches(0.7),
+                    han, font_size=20, bold=True, color=WHITE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_filled_rect(slide, Inches(3.5), y, Inches(1.8), Inches(0.7), PALE)
+        add_textbox(slide, Inches(3.5), y, Inches(1.8), Inches(0.7),
+                    kor, font_size=14, color=SUB, bold=True,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(5.5), y + Inches(0.05), Inches(5.0), Inches(0.6),
+                    body, font_size=13, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(10.7), y + Inches(0.05), Inches(2.2), Inches(0.6),
+                    label, font_size=13, color=ACCENT, bold=True, anchor=MSO_ANCHOR.MIDDLE)
+    add_textbox(slide, Inches(0.7), Inches(6.7), Inches(12.0), Inches(0.4),
+                '소학(小學)·삼강행실도·동몽선습 — 동양 윤리 교육의 뼈대가 된 다섯 기둥',
+                font_size=13, color=SUB, align=PP_ALIGN.CENTER)
 
 
 # ============== Ⅴ. 7편 14장 깊이 읽기 ==============
@@ -592,8 +651,8 @@ for i, p in enumerate(CHAPTERS, 1):
     make_chapter_slide(i, len(CHAPTERS), *p)
 
 
-# ============== Ⅵ. 핵심 사상 7기둥 ==============
-SEC6 = 'Ⅵ. 핵심 사상 7기둥'
+# ============== Ⅵ. 핵심 사상 9기둥 ==============
+SEC6 = 'Ⅵ. 핵심 사상 9기둥'
 
 def make_concept_slide(num, total, han, kor, source, principle, today):
     @S(SEC6)
@@ -636,6 +695,12 @@ CONCEPTS = [
     ('仁 義', '인의', '맹자 전체 · 공자의 인을 인의 병칭으로',
      '공자는 인(仁)을 중심 — 맹자는 인의(仁義)를 병칭\n「居仁由義」 — 인에 머물고 의로 행한다\n「仁 人之安宅也  義 人之正路也」 — 인은 사람의 편안한 집, 의는 바른 길\n「不仁不智 無禮無義 人役也」 — 인의예지가 없으면 남에게 부려질 뿐',
      '맹자가 공자에 더한 결정적 한 축 — 「의(義)」.\n인이 사랑이라면, 의는 그 사랑의 방향성·올바름.\n맹자 이후 동양 윤리의 표준 어휘 — 「인의예지」 사덕(四德).'),
+    ('恒 産 恒 心', '항산항심', '양혜왕 상편 · 경제와 도덕의 관계',
+     '「無恒産而有恒心者 惟士爲能 若民則無恒産 因無恒心」\n항산(恒産, 안정된 생업)이 없으면 항심(恒心, 변함없는 마음)이 없다\n선비는 항산 없이도 항심을 지킬 수 있으나, 백성은 항산이 없으면 도덕을 지킬 수 없다\n→ 정전제(井田制) 제안의 사상적 토대',
+     '도덕보다 「생계의 안정」이 먼저 — 「의식주가 족해야 예의를 안다」(管子)의 맹자적 정식.\n현대 복지국가·기본소득·경제 정책의 동양 원천.\n「가난이 도덕의 문제가 아니라 정치의 문제」라는 통찰.'),
+    ('良 知 良 能', '양지양능', '진심 상편 · 왕양명 심학(心學)의 출전',
+     '「人之所不學而能者 其良能也  所不慮而知者 其良知也」\n사람이 배우지 않고도 할 수 있는 것이 양능, 생각하지 않고도 아는 것이 양지\n어린아이가 부모를 사랑하고 형을 공경할 줄 아는 것 — 본래적 도덕 능력의 증명\n→ 명대 왕양명이 「致良知」로 발전시킨 심학의 원천',
+     '도덕 능력은 외부 학습이 아닌 「본래 갖춘 것」 — 양지·양능.\n왕양명 「致良知」, 한국 양명학(정제두), 일본 양명학(나카에 도쥬)의 출발점.\n현대 도덕 직관·아이의 도덕성 연구의 동양적 정식.'),
 ]
 
 for i, c in enumerate(CONCEPTS, 1):
@@ -747,8 +812,88 @@ def vii_trial(slide, n, t):
     ])
 
 
-# ============== Ⅷ. 명구 16선 ==============
-SEC8 = 'Ⅷ. 명구 16선'
+# ============== Ⅷ. 정전제와 항산항심의 경제 ==============
+SEC_ECON = 'Ⅷ. 정전제와 경제사상'
+
+@S(SEC_ECON)
+def econ_jeongjeon(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_ECON, n, t)
+    add_title(slide, '정전제(井田制) — 맹자가 그린 이상적 토지 제도',
+              '등문공 상편 · 토지를 우물 정(井)자로 9등분')
+    add_filled_rect(slide, Inches(0.7), Inches(2.2), Inches(6.0), Inches(4.6), PALE)
+    cells = [
+        ('私田', '私田', '私田'),
+        ('私田', '公田', '私田'),
+        ('私田', '私田', '私田'),
+    ]
+    for r in range(3):
+        for c in range(3):
+            x = Inches(0.9 + c * 1.85)
+            y = Inches(2.4 + r * 1.45)
+            is_center = (r == 1 and c == 1)
+            color = ACCENT if is_center else INK
+            add_filled_rect(slide, x, y, Inches(1.7), Inches(1.3), color)
+            label = cells[r][c]
+            add_textbox(slide, x, y + Inches(0.2), Inches(1.7), Inches(0.5),
+                        label, font_size=18, bold=True, color=WHITE,
+                        align=PP_ALIGN.CENTER, font_name='Batang')
+            if is_center:
+                add_textbox(slide, x, y + Inches(0.7), Inches(1.7), Inches(0.4),
+                            '공동 경작', font_size=11, color=RULE,
+                            align=PP_ALIGN.CENTER)
+    add_paragraphs(slide, Inches(7.0), Inches(2.3), Inches(5.8), Inches(4.5), [
+        ('● 토지를 우물 정(井)자로 9등분',
+         {'font_size': 16, 'bold': True, 'color': ACCENT}),
+        ('● 8가구가 둘레 8칸을 「사전(私田)」으로 경작',
+         {'font_size': 14, 'space_before': 10}),
+        ('● 가운데 1칸은 「공전(公田)」 — 8가구가 함께 경작 → 세금으로 납입',
+         {'font_size': 14, 'space_before': 8}),
+        ('● 「方里而井 井九百畝 其中爲公田 八家皆私百畝」',
+         {'font_size': 13, 'space_before': 10, 'color': SUB, 'font_name': 'Batang'}),
+        ('     1리(里)에 정(井) 하나 — 900묘 · 가운데 공전, 8가구가 사전 100묘씩',
+         {'font_size': 12, 'color': SUB, 'space_before': 4}),
+        ('● 9분의 1만 세금 — 동양에서 가장 오래된 「적정 조세」 사상',
+         {'font_size': 14, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('● 협력 노동·공동체 의식·균등 토지 — 동양 평등주의의 원천',
+         {'font_size': 13, 'space_before': 10, 'color': SUB}),
+    ])
+
+
+@S(SEC_ECON)
+def econ_hangsan(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_ECON, n, t)
+    add_title(slide, '항산항심(恒産恒心) — 경제와 도덕의 관계',
+              '양혜왕 상편 · 「항산 없이 항심 없다」')
+    add_filled_rect(slide, Inches(0.7), Inches(2.2), Inches(12.0), Inches(1.8), PALE)
+    add_textbox(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(0.7),
+                '無 恒 産 而 有 恒 心 者  惟 士 爲 能',
+                font_size=24, bold=True, color=ACCENT,
+                align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+    add_textbox(slide, Inches(0.7), Inches(3.0), Inches(12.0), Inches(0.7),
+                '若 民 則 無 恒 産  因 無 恒 心',
+                font_size=22, bold=True, color=INK,
+                align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+    add_textbox(slide, Inches(0.7), Inches(3.7), Inches(12.0), Inches(0.4),
+                '「항산 없이도 항심을 지킬 수 있는 자는 오직 선비뿐 · 백성은 항산 없으면 항심도 없다」',
+                font_size=13, color=SUB, align=PP_ALIGN.CENTER)
+    add_paragraphs(slide, Inches(0.7), Inches(4.3), Inches(12.0), Inches(3.0), [
+        ('● 항산(恒産) — 안정된 생업(토지·일자리·소득)',
+         {'font_size': 17, 'space_before': 6}),
+        ('● 항심(恒心) — 변함없는 도덕적 마음',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 도덕을 가르치기 전에 먼저 생계를 안정시켜야 한다 — 「先養後敎」',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('● 백성의 잘못은 백성의 잘못이 아니라 「제도의 잘못」 — 정치의 1차 책임',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 현대 복지국가·기본소득·최저임금·노동권 등 사회 경제 정책의 동양적 원천',
+         {'font_size': 15, 'space_before': 10, 'color': SUB, 'bold': True}),
+    ])
+
+
+# ============== Ⅸ. 명구 18선 ==============
+SEC8 = 'Ⅸ. 명구 18선'
 
 def make_quote_slide(num, total, source, han, kor, comment):
     @S(SEC8)
@@ -819,14 +964,20 @@ QUOTES = [
     ('진심 하편 · 민귀군경', '民 爲 貴   社 稷 次 之   君 爲 輕',
      '백성이 가장 귀하고, 사직이 다음, 임금이 가장 가볍다',
      '맹자의 마지막 정수. 동양 민본주의의 절대 명제. 정약용 『목민심서』·동학·현대 한국 헌법 정신의 사상적 원천.'),
+    ('양혜왕 상편 · 항산항심', '無 恒 産 者  無 恒 心',
+     '항산(안정된 생업)이 없는 자에겐 항심(변함없는 마음)이 없다',
+     '경제와 도덕의 관계를 정의한 한 줄. 「의식주가 족해야 예의를 안다」의 맹자적 정식 — 현대 복지·기본소득 사상의 동양 원천.'),
+    ('진심 상편 · 양지양능', '不 學 而 能 者  良 能 也   不 慮 而 知 者  良 知 也',
+     '배우지 않고도 할 수 있는 것이 양능, 생각하지 않고도 아는 것이 양지',
+     '왕양명 「치양지(致良知)」 심학(心學)의 출전. 도덕 능력은 본래 갖춘 것 — 어린아이의 사랑·공경이 그 증거.'),
 ]
 
 for i, q in enumerate(QUOTES, 1):
     make_quote_slide(i, len(QUOTES), *q)
 
 
-# ============== Ⅸ. 동아시아 수용 ==============
-SEC9 = 'Ⅸ. 동아시아 수용'
+# ============== Ⅹ. 동아시아 수용 ==============
+SEC9 = 'Ⅹ. 동아시아 수용'
 
 @S(SEC9)
 def ix_korea(slide, n, t):
@@ -849,6 +1000,32 @@ def ix_korea(slide, n, t):
          {'font_size': 17, 'space_before': 10}),
         ('● 독립운동 — 안중근·윤봉길·김구의 좌우명 「富貴不能淫·貧賤不能移·威武不能屈」',
          {'font_size': 16, 'space_before': 10, 'color': ACCENT, 'bold': True}),
+    ])
+
+
+@S(SEC9)
+def ix_sachil(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC9, n, t)
+    add_title(slide, '사단칠정(四端七情) 논쟁 — 조선 성리학의 정점',
+              '맹자의 「사단」이 한국 철학사에서 200년 논쟁을 낳다')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 사단(四端) — 맹자 「측은·수오·사양·시비」 / 칠정(七情) — 예기 「희·노·애·구·애·오·욕」',
+         {'font_size': 17, 'space_before': 4}),
+        ('● 「둘은 어떻게 다른가?」가 조선 성리학의 200년 논쟁',
+         {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('● 1차 논쟁 — 퇴계 이황 vs 고봉 기대승 (1559~1566, 7년)',
+         {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('     · 퇴계 — 「사단은 理의 발(理發), 칠정은 氣의 발(氣發)」 — 이기호발설(理氣互發說)',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('     · 고봉 — 「사단과 칠정은 모두 정(情), 사단은 칠정 중 善한 부분」',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 2차 논쟁 — 율곡 이이 vs 우계 성혼 (1572~1573)',
+         {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('     · 율곡 — 「氣發理乘一途說」 — 발하는 것은 氣뿐, 理는 氣를 타고 따른다',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 맹자의 한 단어가 한국 철학사 최대 논쟁의 씨앗이 된 역사적 사례',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
     ])
 
 
@@ -900,8 +1077,8 @@ def ix_west(slide, n, t):
     ])
 
 
-# ============== Ⅹ. 오늘 우리에게 + 마무리 ==============
-SEC10 = 'Ⅹ. 오늘 우리에게'
+# ============== Ⅺ. 오늘 우리에게 + 마무리 ==============
+SEC10 = 'Ⅺ. 오늘 우리에게'
 
 @S(SEC10)
 def x_today(slide, n, t):
