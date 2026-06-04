@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-손자병법 발표자료 재작성 스크립트
+손자병법(孫子兵法) 발표자료 — 전면 보강판 PPT
 원칙: 흰 배경 · 한 슬라이드 한 주제 · 매수 무제약
+13편 각 1장 깊이 읽기 · 손무 생애 · 무경칠서 위상 · 후대 영향 망라
 """
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
@@ -14,12 +15,13 @@ ACCENT = RGBColor(0x8B, 0x1A, 0x1A)
 SUB    = RGBColor(0x55, 0x60, 0x70)
 RULE   = RGBColor(0xC8, 0xA2, 0x5B)
 PALE   = RGBColor(0xF5, 0xEE, 0xDD)
+WHITE  = RGBColor(0xFF, 0xFF, 0xFF)
 
 
 def set_white_background(slide):
     fill = slide.background.fill
     fill.solid()
-    fill.fore_color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+    fill.fore_color.rgb = WHITE
 
 
 def add_textbox(slide, left, top, width, height, text, *,
@@ -65,7 +67,6 @@ def add_paragraphs(slide, left, top, width, height, lines, *,
         run.font.name = opts.get('font_name', font_name)
         run.font.size = Pt(opts.get('font_size', font_size))
         run.font.bold = opts.get('bold', False)
-        run.font.italic = opts.get('italic', False)
         run.font.color.rgb = opts.get('color', color)
     return tb
 
@@ -100,10 +101,10 @@ def add_page_header(slide, section, page_num, total):
 
 def add_title(slide, title, subtitle=None):
     add_textbox(slide, Inches(0.5), Inches(0.85), Inches(12.8), Inches(0.7),
-                title, font_size=32, bold=True, color=INK)
+                title, font_size=30, bold=True, color=INK)
     if subtitle:
         add_textbox(slide, Inches(0.5), Inches(1.55), Inches(12.8), Inches(0.4),
-                    subtitle, font_size=15, color=SUB)
+                    subtitle, font_size=14, color=SUB)
 
 
 prs = Presentation()
@@ -119,864 +120,855 @@ def S(section):
     return deco
 
 
-# ---------- 1. 표지 ----------
+# ============== 표지 ==============
 @S('표지')
-def s_cover(slide, page, total):
+def slide_cover(slide, n, t):
     set_white_background(slide)
-    add_filled_rect(slide, Inches(0), Inches(0), Inches(13.333), Inches(0.4), RULE)
-    add_textbox(slide, Inches(0.5), Inches(1.6), Inches(12.3), Inches(1.8),
-                '孫子兵法', font_size=96, bold=True, color=INK,
-                align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.6), Inches(12.3), Inches(0.5),
-                'The Art of War · 손자병법', font_size=24, color=ACCENT,
-                align=PP_ALIGN.CENTER)
-    add_rule(slide, Inches(5.5), Inches(4.4), Inches(2.3), color=RULE, weight=1.5)
-    add_textbox(slide, Inches(0.5), Inches(4.7), Inches(12.3), Inches(0.5),
-                '손무(孫武)의 13편 — 동양 최고(最古)의 전략 고전',
-                font_size=20, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(5.2), Inches(12.3), Inches(0.4),
-                '춘추시대 말기 (BC 6~5세기) · 13편 약 6,000자',
-                font_size=15, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(5.8), Inches(12.3), Inches(0.4),
-                '부전이굴인지병(不戰而屈人之兵) — 싸우지 않고 이기는 것이 최선',
-                font_size=14, color=ACCENT, bold=True, align=PP_ALIGN.CENTER)
-    add_filled_rect(slide, Inches(0), Inches(7.1), Inches(13.333), Inches(0.4), RULE)
+    add_filled_rect(slide, Inches(0), Inches(0), Inches(13.333), Inches(0.4), INK)
+    add_filled_rect(slide, Inches(0), Inches(7.1), Inches(13.333), Inches(0.4), INK)
+    add_textbox(slide, Inches(0.5), Inches(1.4), Inches(12.3), Inches(0.6),
+                '2,500년의 병법 · 세계 3대 병서의 최고봉 · 무경칠서의 첫머리',
+                font_size=18, color=SUB, align=PP_ALIGN.CENTER)
+    add_textbox(slide, Inches(0.5), Inches(2.3), Inches(12.3), Inches(1.6),
+                '孫 子 兵 法',
+                font_size=92, bold=True, color=INK, align=PP_ALIGN.CENTER, font_name='Batang')
+    add_textbox(slide, Inches(0.5), Inches(4.2), Inches(12.3), Inches(0.6),
+                '손 자 병 법',
+                font_size=32, color=ACCENT, align=PP_ALIGN.CENTER)
+    add_rule(slide, Inches(4.5), Inches(5.1), Inches(4.3))
+    add_textbox(slide, Inches(0.5), Inches(5.3), Inches(12.3), Inches(0.5),
+                '不 戰 而 屈 人 之 兵 — 싸우지 않고 이기는 것이 최선',
+                font_size=18, color=SUB, align=PP_ALIGN.CENTER, font_name='Batang')
+    add_textbox(slide, Inches(0.5), Inches(5.9), Inches(12.3), Inches(0.5),
+                '손무(孫武) · 춘추 말 BC 6세기 · 13편 약 6,000자',
+                font_size=16, color=INK, align=PP_ALIGN.CENTER)
+    add_textbox(slide, Inches(0.5), Inches(6.5), Inches(12.3), Inches(0.4),
+                '병법서이자 인생서 · 동아시아·서양 군사학의 영원한 교과서',
+                font_size=14, color=INK, align=PP_ALIGN.CENTER)
 
 
-# ---------- 2. 목차 ----------
+# ============== 목차 ==============
 @S('목차')
-def s_toc(slide, page, total):
+def slide_toc(slide, n, t):
     set_white_background(slide)
-    add_textbox(slide, Inches(0.5), Inches(0.5), Inches(12.8), Inches(0.7),
-                '목 차', font_size=36, bold=True, color=INK)
-    add_rule(slide, Inches(0.5), Inches(1.3), Inches(12.8))
-    items = [
-        ('Ⅰ', '개요 — 손자병법이란 무엇인가'),
-        ('Ⅱ', '13편의 구성'),
-        ('Ⅲ', '핵심 사상 ① — 부전승(不戰勝)과 오사(五事)'),
-        ('Ⅳ', '핵심 사상 ② — 허실·기정·세'),
-        ('Ⅴ', '핵심 사상 ③ — 지피지기와 변화의 철학'),
-        ('Ⅵ', '명구절 10선'),
-        ('Ⅶ', '손자병법의 구조적 특징'),
-        ('Ⅷ', '현대적 의의'),
-        ('Ⅸ', '다른 사상과의 비교'),
-        ('Ⅹ', '마무리'),
+    add_page_header(slide, '목차', n, t)
+    add_title(slide, '목 차', 'Contents')
+    items_left = [
+        ('Ⅰ.', '개요 — 6,000자의 역설'),
+        ('Ⅱ.', '손무와 시대 — 춘추 말의 오나라'),
+        ('Ⅲ.', '무경칠서의 첫머리 · 은작산 죽간'),
+        ('Ⅳ.', '13편의 구조'),
+        ('Ⅴ.', '13편 각 편 깊이 읽기'),
     ]
-    top = 1.7
-    for num, title in items:
-        add_textbox(slide, Inches(1.2), Inches(top), Inches(1.0), Inches(0.4),
-                    num, font_size=22, bold=True, color=ACCENT)
-        add_textbox(slide, Inches(2.4), Inches(top), Inches(10.0), Inches(0.4),
-                    title, font_size=20, color=INK)
-        top += 0.5
+    items_right = [
+        ('Ⅵ.', '핵심 사상 6기둥'),
+        ('Ⅶ.', '명구 16선'),
+        ('Ⅷ.', '동서양 후대 영향'),
+        ('Ⅸ.', '짝 책들 — 오자·삼십육계·육도삼략'),
+        ('Ⅹ.', '오늘 우리에게 · 마무리'),
+    ]
+    for i, (num, txt) in enumerate(items_left):
+        y = Inches(2.6 + i * 0.65)
+        add_textbox(slide, Inches(0.9), y, Inches(0.7), Inches(0.5),
+                    num, font_size=20, bold=True, color=ACCENT)
+        add_textbox(slide, Inches(1.6), y, Inches(5.2), Inches(0.5),
+                    txt, font_size=17, color=INK)
+    for i, (num, txt) in enumerate(items_right):
+        y = Inches(2.6 + i * 0.65)
+        add_textbox(slide, Inches(7.2), y, Inches(0.7), Inches(0.5),
+                    num, font_size=20, bold=True, color=ACCENT)
+        add_textbox(slide, Inches(7.9), y, Inches(5.2), Inches(0.5),
+                    txt, font_size=17, color=INK)
 
 
-# ---------- Ⅰ. 개요 ----------
-@S('Ⅰ. 개요')
-def s_what_is(slide, page, total):
+# ============== Ⅰ. 개요 ==============
+SEC1 = 'Ⅰ. 개요'
+
+@S(SEC1)
+def i_overview(slide, n, t):
     set_white_background(slide)
-    add_page_header(slide, 'Ⅰ. 개요', page, total)
-    add_title(slide, '손자병법(孫子兵法)이란 무엇인가')
-    add_filled_rect(slide, Inches(0.5), Inches(2.3), Inches(12.3), Inches(1.4), PALE)
-    add_textbox(slide, Inches(0.9), Inches(2.55), Inches(11.5), Inches(0.5),
-                '동양에서 가장 오래되고 가장 영향력 있는 군사 전략서',
-                font_size=24, bold=True, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.9), Inches(3.15), Inches(11.5), Inches(0.5),
-                '전쟁 기술서를 넘어서, 전략적 사고의 교과서로 평가받는 고전',
-                font_size=16, color=ACCENT, align=PP_ALIGN.CENTER)
-    nums = [('13', '편(篇)'), ('약 6,000', '자(字)'), ('2,500+', '년의 영향')]
-    for i, (n, lbl) in enumerate(nums):
-        x = 1.8 + i * 3.5
-        add_textbox(slide, Inches(x), Inches(4.4), Inches(3.0), Inches(1.0),
-                    n, font_size=58, bold=True, color=ACCENT,
-                    align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(x), Inches(5.6), Inches(3.0), Inches(0.5),
-                    lbl, font_size=17, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.7), Inches(12.3), Inches(0.4),
-                '극도로 간결한 문장에 압축된 보편 전략 — 군사·외교·경영·일상까지',
+    add_page_header(slide, SEC1, n, t)
+    add_title(slide, '한눈에 보는 손자병법')
+    rows = [
+        ('서명',  '손자병법(孫子兵法) · 손자(孫子) · 오손자(吳孫子)'),
+        ('저자',  '손무(孫武), 자(字) 장경(長卿) — 제(齊)나라 출신'),
+        ('시대',  '춘추시대 말기 (BC 6세기 말 ~ 5세기 초)'),
+        ('분량',  '13편 · 약 6,000자 — 동양 고전 중 가장 압축된 단일 저작'),
+        ('성격',  '동양 최고(最古)·최고(最高)의 군사 전략서 · 보편적 지혜의 보고'),
+        ('위상',  '세계 3대 병서 (손자병법 · 클라우제비츠 전쟁론 · 미야모토 오륜서)'),
+        ('주석사', '조조(曹操) 최초 주석 · 송 무경칠서 첫머리 · 1972 은작산 죽간'),
+        ('적용 영역', '전쟁 · 외교 · 경영 · 협상 · 스포츠 · 일상'),
+    ]
+    for i, (k, v) in enumerate(rows):
+        y = Inches(2.3 + i * 0.6)
+        add_filled_rect(slide, Inches(0.7), y, Inches(2.6), Inches(0.5), PALE)
+        add_textbox(slide, Inches(0.7), y, Inches(2.6), Inches(0.5),
+                    k, font_size=14, bold=True, color=INK,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(3.5), y, Inches(9.5), Inches(0.5),
+                    v, font_size=15, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+
+
+@S(SEC1)
+def i_brevity(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC1, n, t)
+    add_title(slide, '왜 6,000자인가 — 간결함의 힘',
+              '단행본 한 챕터 분량이 2,500년 동안 살아남은 이유')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 13편 · 6,000자 — 오늘날 단행본 한 챕터 분량',
+         {'font_size': 18, 'space_before': 4}),
+        ('● 그러나 각 문장은 극도로 압축된 명제 — 한 구절이 한 원리, 한 편이 한 체계',
+         {'font_size': 18, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('● 『논어』가 공자의 단편적 어록 모음이라면,',
+         {'font_size': 17, 'space_before': 12}),
+        ('     손자병법은 한 인물이 체계적으로 설계한 단일 저작',
+         {'font_size': 17, 'space_before': 6, 'bold': True, 'color': ACCENT}),
+        ('● 이 점에서 동양 고전 중 독특한 위치를 차지',
+         {'font_size': 17, 'space_before': 12}),
+        ('● 압축의 미학 — 읽는 자가 자기 상황에 비추어 해석할 수 있는 「열린 텍스트」',
+         {'font_size': 16, 'space_before': 12, 'color': SUB, 'bold': True}),
+        ('● 2,500년 동안 끊임없이 새 의미를 낳을 수 있었던 이유',
+         {'font_size': 16, 'space_before': 10, 'color': SUB}),
+    ])
+
+
+@S(SEC1)
+def i_paradox(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC1, n, t)
+    add_title(slide, '위대한 역설 — 「병법서가 싸움을 부정한다」',
+              '서양 클라우제비츠 『전쟁론』과 결정적으로 다른 지점')
+    add_filled_rect(slide, Inches(0.7), Inches(2.2), Inches(12.0), Inches(0.9), PALE)
+    add_textbox(slide, Inches(0.7), Inches(2.2), Inches(12.0), Inches(0.9),
+                '不 戰 而 屈 人 之 兵  善 之 善 者 也',
+                font_size=24, bold=True, color=ACCENT,
+                align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+    add_textbox(slide, Inches(0.7), Inches(3.1), Inches(12.0), Inches(0.4),
+                '싸우지 않고 적의 군대를 굴복시키는 것이 최선이다 — 제3편 모공',
                 font_size=14, color=SUB, align=PP_ALIGN.CENTER)
+    add_paragraphs(slide, Inches(0.7), Inches(3.9), Inches(12.0), Inches(3.0), [
+        ('● 제1편 시계 — 「兵者 國之大事 不可不察也」',
+         {'font_size': 16, 'space_before': 4, 'font_name': 'Batang'}),
+        ('     전쟁은 중대사이니 살피지 않을 수 없다',
+         {'font_size': 13, 'color': SUB, 'space_before': 2}),
+        ('● 제3편 모공 — 「不戰而屈人之兵 善之善者也」',
+         {'font_size': 16, 'space_before': 10, 'font_name': 'Batang'}),
+        ('     싸우지 않고 이기는 것이 최선',
+         {'font_size': 13, 'color': SUB, 'space_before': 2}),
+        ('● 제12편 화공 — 「亡國不可以復存 死者不可以復生」',
+         {'font_size': 16, 'space_before': 10, 'font_name': 'Batang'}),
+        ('     망한 나라는 되살릴 수 없고, 죽은 자는 다시 살릴 수 없다',
+         {'font_size': 13, 'color': SUB, 'space_before': 2}),
+        ('● 「전쟁을 준비하되 전쟁을 넘어서라」 — 2,500년간 살아남은 이유',
+         {'font_size': 17, 'space_before': 14, 'bold': True, 'color': ACCENT}),
+    ])
 
 
-@S('Ⅰ. 개요')
-def s_sunmu(slide, page, total):
+@S(SEC1)
+def i_keyideas(slide, n, t):
     set_white_background(slide)
-    add_page_header(slide, 'Ⅰ. 개요', page, total)
-    add_title(slide, '손무(孫武)', '— 손자병법의 저자, 춘추시대의 군사 전략가')
-    lines = [
-        ('출신', {'bold': True, 'font_size': 18, 'color': ACCENT}),
-        ('  제(齊)나라 출신, 후에 오(吳)나라로 망명',
-         {'font_size': 18}),
-        ('등용', {'bold': True, 'font_size': 18, 'color': ACCENT, 'space_before': 12}),
-        ('  오왕(吳王) 합려(闔閭)에게 병법 13편을 올려 장군으로 임명',
-         {'font_size': 18}),
-        ('전공', {'bold': True, 'font_size': 18, 'color': ACCENT, 'space_before': 12}),
-        ('  초(楚)나라 수도 영(郢) 함락 — 약소국 오나라를 패자(覇者) 반열에 올림',
-         {'font_size': 18}),
-        ('후대 평가', {'bold': True, 'font_size': 18, 'color': ACCENT, 'space_before': 12}),
-        ('  "병성(兵聖)" — 병가(兵家)의 성인',
-         {'font_size': 18}),
+    add_page_header(slide, SEC1, n, t)
+    add_title(slide, '핵심 사상 한 폭으로')
+    boxes = [
+        ('不 戰 勝', '부전승', '싸우지 않고 이긴다'),
+        ('知 彼 知 己', '지피지기', '적을 알고 나를 안다'),
+        ('五 事 七 計', '오사칠계', '도·천·지·장·법 + 7가지 비교'),
+        ('奇 正 / 虛 實', '기정·허실', '정공과 기습, 빈 곳과 찬 곳'),
+        ('勢', '세', '활시위의 에너지 — 형세의 운용'),
+        ('詭 道', '궤도', '전쟁은 본질적으로 속임수'),
     ]
-    add_paragraphs(slide, Inches(0.9), Inches(2.3), Inches(11.5), Inches(4.5),
-                   lines, line_spacing=1.4)
+    for i, (han, kor, desc) in enumerate(boxes):
+        col, row = i % 3, i // 3
+        x = Inches(0.7 + col * 4.2)
+        y = Inches(2.3 + row * 2.3)
+        add_filled_rect(slide, x, y, Inches(3.9), Inches(2.0), PALE)
+        add_textbox(slide, x, y + Inches(0.2), Inches(3.9), Inches(0.7),
+                    han, font_size=22, bold=True, color=ACCENT,
+                    align=PP_ALIGN.CENTER, font_name='Batang')
+        add_textbox(slide, x, y + Inches(0.95), Inches(3.9), Inches(0.4),
+                    kor, font_size=14, color=SUB, align=PP_ALIGN.CENTER)
+        add_textbox(slide, x + Inches(0.2), y + Inches(1.4), Inches(3.5), Inches(0.5),
+                    desc, font_size=13, color=INK, align=PP_ALIGN.CENTER)
 
 
-@S('Ⅰ. 개요')
-def s_episode(slide, page, total):
+# ============== Ⅱ. 손무와 시대 ==============
+SEC2 = 'Ⅱ. 손무와 시대'
+
+@S(SEC2)
+def ii_sunwu(slide, n, t):
     set_white_background(slide)
-    add_page_header(slide, 'Ⅰ. 개요', page, total)
-    add_title(slide, '오궁(吳宮)의 궁녀 훈련 — 손무를 증명한 일화')
-    add_filled_rect(slide, Inches(0.6), Inches(2.3), Inches(11.9), Inches(4.0), PALE)
-    add_paragraphs(slide, Inches(0.9), Inches(2.5), Inches(11.3), Inches(3.7), [
-        ('오왕 합려가 손무를 시험했다.', {'font_size': 17, 'bold': True, 'align': PP_ALIGN.CENTER}),
-        ('"이 궁녀들도 훈련시킬 수 있겠소?"', {'font_size': 17, 'align': PP_ALIGN.CENTER, 'space_before': 4}),
-        ('', {'font_size': 4}),
-        ('손무는 궁녀 180명을 두 부대로 나누고 합려의 총희(寵姬) 두 명을 대장으로 세웠다.',
-         {'font_size': 16, 'align': PP_ALIGN.CENTER, 'space_before': 6, 'color': SUB}),
-        ('호령을 내리자 궁녀들은 웃기만 했다.', {'font_size': 16, 'align': PP_ALIGN.CENTER, 'color': SUB}),
-        ('"법령이 분명하지 않은 것은 장수의 죄"라며 다시 설명하고 명령을 내렸다.',
-         {'font_size': 16, 'align': PP_ALIGN.CENTER, 'color': SUB}),
-        ('그래도 웃기만 하자 손무는 두 대장을 처형하려 했다.',
-         {'font_size': 16, 'align': PP_ALIGN.CENTER, 'color': SUB}),
-        ('', {'font_size': 4}),
-        ('합려가 만류했지만 손무는 답했다.', {'font_size': 16, 'align': PP_ALIGN.CENTER, 'space_before': 6}),
-        ('"장군이 출정하면 임금의 명령도 받지 않는 바가 있습니다(將在軍 君命有所不受)"',
-         {'font_size': 17, 'bold': True, 'color': ACCENT, 'align': PP_ALIGN.CENTER}),
-        ('두 총희를 베자 — 궁녀들은 더 이상 웃지 않았다.',
-         {'font_size': 16, 'align': PP_ALIGN.CENTER, 'space_before': 6, 'color': SUB}),
-    ], line_spacing=1.25)
-    add_textbox(slide, Inches(0.5), Inches(6.6), Inches(12.3), Inches(0.4),
-                '— 사기(史記) 손자오기열전 · 군기(軍紀)와 장수의 권한을 보여주는 고전 일화',
-                font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-
-
-@S('Ⅰ. 개요')
-def s_pansa(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅰ. 개요', page, total)
-    add_title(slide, '판본과 영향사', '— 2,500년에 걸친 전파의 궤적')
-    items = [
-        ('AD 3세기',  '조조(曹操)의 주석', '최초의 본격적 주석서를 편찬 — 후대 판본의 기초'),
-        ('AD 7세기',  '당송 11가 주석',     '두목·이전 등 11명의 주석가가 가세 — 정본 형성'),
-        ('1972년',    '은작산(銀雀山) 죽간 출토', '한묘에서 죽간본 발견 — 현대 손자병법 연구의 전환점'),
-        ('18세기',    '유럽 전파',          '예수회 선교사들이 라틴어·프랑스어로 번역 → 서구 진출'),
-        ('20세기',    '서구 군사학교 필독서', 'West Point·MBA·실리콘밸리까지 영향력 확장'),
+    add_page_header(slide, SEC2, n, t)
+    add_title(slide, '손무(孫武) — 제나라 출신의 오나라 장군',
+              '제나라 내분을 피해 오로 망명 · 오자서의 추천')
+    rows = [
+        ('이름',     '손무(孫武), 자(字) 장경(長卿)'),
+        ('출생지',   '제(齊)나라 (현 산동성)'),
+        ('가문',     '제나라 명문 전씨(田氏) 가문 출신'),
+        ('활동 시기', 'BC 544경 ~ BC 496경'),
+        ('활동 국가', '오(吳)나라'),
+        ('주군',     '오왕 합려(闔閭)'),
+        ('동료',     '오자서(伍子胥) — 손무를 합려에게 추천'),
+        ('대표 업적', '13편 저술 · 오의 초(楚) 정벌 (수도 영郢 함락)'),
     ]
-    top = 2.4
-    for era, title, desc in items:
-        add_filled_rect(slide, Inches(0.7), Inches(top), Inches(2.3), Inches(0.85), ACCENT)
-        add_textbox(slide, Inches(0.7), Inches(top + 0.22), Inches(2.3), Inches(0.5),
-                    era, font_size=16, bold=True,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(3.2), Inches(top), Inches(9.5), Inches(0.85), PALE)
-        add_textbox(slide, Inches(3.4), Inches(top + 0.08), Inches(9.1), Inches(0.4),
-                    title, font_size=17, bold=True, color=INK)
-        add_textbox(slide, Inches(3.4), Inches(top + 0.45), Inches(9.1), Inches(0.4),
-                    desc, font_size=13, color=SUB)
-        top += 0.95
+    for i, (k, v) in enumerate(rows):
+        y = Inches(2.3 + i * 0.6)
+        add_filled_rect(slide, Inches(0.7), y, Inches(2.6), Inches(0.5), PALE)
+        add_textbox(slide, Inches(0.7), y, Inches(2.6), Inches(0.5),
+                    k, font_size=14, bold=True, color=INK,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(3.5), y, Inches(9.5), Inches(0.5),
+                    v, font_size=15, color=INK, anchor=MSO_ANCHOR.MIDDLE)
 
 
-# ---------- Ⅱ. 구성 ----------
-@S('Ⅱ. 구성')
-def s_structure_overview(slide, page, total):
+@S(SEC2)
+def ii_concubines(slide, n, t):
     set_white_background(slide)
-    add_page_header(slide, 'Ⅱ. 구성', page, total)
-    add_title(slide, '13편의 구성 개관 — 세 층위의 논리 전개')
-    # 3개 박스
-    layers = [
-        ('전략론',     '1~6편',  '전쟁의 본질과\n근본 원칙', ACCENT),
-        ('전술론',     '7~11편', '실전의 운용과\n지형 활용', INK),
-        ('특수전법',   '12~13편', '화공·정보전 등\n특수한 기법', SUB),
+    add_page_header(slide, SEC2, n, t)
+    add_title(slide, '후궁 180명 훈련 일화 — 사기에 전하는 손무의 출발',
+              '『사기·손자오기열전』의 가장 유명한 일화')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 합려가 손무의 실력을 시험하고자 후궁 180명을 주며 훈련시켜 보라 함',
+         {'font_size': 17, 'space_before': 4}),
+        ('● 손무는 두 부대로 나누고 합려의 총희(寵姬) 두 명을 대장으로 삼음',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 명령을 내렸으나 궁녀들은 웃기만 함 — 한 번 용서',
+         {'font_size': 17, 'space_before': 10, 'color': SUB}),
+        ('● 다시 명령했으나 여전히 웃음 → 총희 두 명을 즉시 참수',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('● 합려가 만류하자 — 「君命有所不受 — 장군이 전장에 있을 때는 임금의 명도 받지 않는다」',
+         {'font_size': 16, 'space_before': 10, 'font_name': 'Batang'}),
+        ('● 이후 궁녀들은 완벽하게 명령에 따랐다',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 이 일화의 상징 — 엄격한 군법·실전에서 증명된 병법가·실력 평가가 감정보다 우선',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
+    ])
+
+
+@S(SEC2)
+def ii_era(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC2, n, t)
+    add_title(slide, '춘추 말기 — 손자병법이 나온 시대',
+              '전쟁 양상의 대형화 · 현실주의 전쟁관의 등장')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 주(周) 왕실 권위 완전 상실 — 「춘추 5패」의 시대',
+         {'font_size': 17, 'space_before': 4}),
+        ('● 전쟁 양상의 변화 — 귀족 의례적 전투 → 대규모 동원 전쟁',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     철기 보급 · 보병 중심 편제 확대',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 오월(吳越)의 부상 — 남방 변방국이 중원을 뒤흔드는 시기',
+         {'font_size': 17, 'space_before': 10}),
+        ('     합려·부차·구천·오자서·범려 — 모두 이 시대의 인물',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 사상의 태동 — 공자(BC 551~479)가 거의 동시대',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 손자병법은 「전쟁이 대형화·전문화되던 시점」의 최초 체계적 병법서',
+         {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('● 귀족 의례의 전쟁관을 버리고 「현실주의적·합리주의적」 전쟁관을 제시 — 획기적',
+         {'font_size': 16, 'space_before': 10, 'color': SUB}),
+    ])
+
+
+# ============== Ⅲ. 무경칠서·판본 ==============
+SEC3 = 'Ⅲ. 위상과 판본'
+
+@S(SEC3)
+def iii_wujing(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC3, n, t)
+    add_title(slide, '무경칠서(武經七書)의 첫머리',
+              '송 신종(1043) 공식 선정 · 동아시아 군사학의 정전 7권 중 으뜸')
+    rows = [
+        ('孫子兵法 손자병법',  '손무',          '전쟁의 원리 — 부전승의 철학', True),
+        ('吳子兵法 오자병법',  '오기',          '군사 행정 · 장수와 사기'),
+        ('司馬法 사마법',     '전양저',         '군례(軍禮) · 군의 윤리'),
+        ('尉繚子 울료자',     '울료',          '법치 군사론 · 엄정한 군기'),
+        ('李衛公問對 이위공문대', '이정',        '당대 전략 문답 · 정·기의 변용'),
+        ('六韜 육도',         '태공망',         '종합 통치 · 인재 · 전략 · 전술'),
+        ('三略 삼략',         '황석공',         '리더십 · 강유 조화 · 정당한 전쟁'),
     ]
-    for i, (name, scope, desc, color) in enumerate(layers):
-        x = 0.5 + i * 4.3
-        add_filled_rect(slide, Inches(x), Inches(2.5), Inches(4.1), Inches(4.5), PALE)
-        add_filled_rect(slide, Inches(x), Inches(2.5), Inches(4.1), Inches(0.8), color)
-        add_textbox(slide, Inches(x), Inches(2.65), Inches(4.1), Inches(0.6),
-                    name, font_size=24, bold=True,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(x), Inches(3.6), Inches(4.1), Inches(0.5),
-                    scope, font_size=18, bold=True, color=ACCENT,
-                    align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(x), Inches(4.5), Inches(4.1), Inches(2.0),
-                    desc, font_size=17, color=INK, align=PP_ALIGN.CENTER,
+    for i, row in enumerate(rows):
+        name, author, role = row[0], row[1], row[2]
+        highlight = len(row) > 3 and row[3]
+        y = Inches(2.3 + i * 0.6)
+        bg = ACCENT if highlight else (PALE if i % 2 == 1 else WHITE)
+        text_color = WHITE if highlight else INK
+        add_filled_rect(slide, Inches(0.7), y, Inches(3.7), Inches(0.55), bg)
+        add_textbox(slide, Inches(0.7), y, Inches(3.7), Inches(0.55),
+                    name, font_size=15, bold=True, color=text_color,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, Inches(4.6), y, Inches(2.2), Inches(0.55),
+                    author, font_size=14, color=ACCENT if highlight else SUB, bold=highlight,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(7.0), y, Inches(5.9), Inches(0.55),
+                    role, font_size=14, color=ACCENT if highlight else INK, bold=highlight,
                     anchor=MSO_ANCHOR.MIDDLE)
-    add_textbox(slide, Inches(0.5), Inches(7.05), Inches(12.3), Inches(0.4),
-                '총론(전략) → 원칙(전술) → 특수(정보·화공)로 이어지는 체계적 전개',
+    add_textbox(slide, Inches(0.7), Inches(6.6), Inches(12.0), Inches(0.4),
+                '송대부터 무과(武科) 필수 과목 — 동아시아 무관의 첫 교과서',
                 font_size=14, color=SUB, align=PP_ALIGN.CENTER)
 
 
-@S('Ⅱ. 구성')
-def s_strategy(slide, page, total):
+@S(SEC3)
+def iii_versions(slide, n, t):
     set_white_background(slide)
-    add_page_header(slide, 'Ⅱ. 구성', page, total)
-    add_title(slide, '전략론 — 1~6편')
+    add_page_header(slide, SEC3, n, t)
+    add_title(slide, '판본의 역사 — 1972년 은작산 죽간의 충격',
+              '조조의 최초 주석부터 한묘 죽간 출토까지')
     rows = [
-        ('1', '시계(始計)', '전쟁의 기본 계산 — 오사칠계(五事七計)'),
-        ('2', '작전(作戰)', '전쟁의 비용 — 속전속결(速戰速決)의 원칙'),
-        ('3', '모공(謀攻)', '부전승(不戰勝) — 지피지기(知彼知己)'),
-        ('4', '군형(軍形)', '선승이후구전(先勝而後求戰) — 형(形)의 확립'),
-        ('5', '병세(兵勢)', '기정(奇正)의 운용 · 세(勢)의 위력'),
-        ('6', '허실(虛實)', '주도권 장악 — 적의 빈 곳을 친다, 물의 비유'),
+        ('춘추 말', '손무가 13편 저술, 오왕 합려에게 헌상'),
+        ('전국시대', '후손 손빈(孫臏)이 별도의 『손빈병법』 저술'),
+        ('한(漢)대', '장량·한신이 정리 · 『사기』 손자오기열전 수록'),
+        ('삼국시대', '조조(曹操)가 최초 주석서 『위무주손자(魏武注孫子)』 — 현존 가장 권위 있는 주해'),
+        ('송(宋)대', '무경칠서의 첫머리로 편입 — 무과 필수 과목'),
+        ('1972년', '산동 은작산(銀雀山) 한묘에서 죽간본 출토 — 진본 입증'),
     ]
-    top = 2.3
-    for num, name, desc in rows:
-        add_textbox(slide, Inches(0.7), Inches(top), Inches(0.7), Inches(0.5),
-                    num, font_size=22, bold=True, color=ACCENT,
-                    align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(1.6), Inches(top), Inches(3.0), Inches(0.5),
-                    name, font_size=20, bold=True, color=INK)
-        add_textbox(slide, Inches(4.7), Inches(top + 0.05), Inches(8.2), Inches(0.5),
-                    desc, font_size=16, color=SUB)
-        top += 0.7
-
-
-@S('Ⅱ. 구성')
-def s_tactics(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅱ. 구성', page, total)
-    add_title(slide, '전술론·특수전법 — 7~13편')
-    rows = [
-        ('7',  '군쟁(軍爭)',  '기동과 주도권 — 풍림화산(風林火山)'),
-        ('8',  '구변(九變)',  '아홉 가지 변통 · 장수의 다섯 위험(五危)'),
-        ('9',  '행군(行軍)',  '지형별 행군과 적의 동태 관찰'),
-        ('10', '지형(地形)',  '여섯 지형과 군대의 여섯 패망'),
-        ('11', '구지(九地)',  '아홉 지형 · 사지즉전(死地則戰)'),
-        ('12', '화공(火攻)',  '화공의 다섯 기법 · 분노로 군대를 일으키지 말 것'),
-        ('13', '용간(用間)',  '다섯 종류의 간첩(五間) · 선지(先知)의 중요성'),
-    ]
-    top = 2.3
-    for num, name, desc in rows:
-        add_textbox(slide, Inches(0.7), Inches(top), Inches(0.7), Inches(0.4),
-                    num, font_size=20, bold=True, color=ACCENT,
-                    align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(1.6), Inches(top), Inches(3.0), Inches(0.4),
-                    name, font_size=18, bold=True, color=INK)
-        add_textbox(slide, Inches(4.7), Inches(top + 0.03), Inches(8.2), Inches(0.4),
-                    desc, font_size=15, color=SUB)
-        top += 0.62
-
-
-# ---------- Ⅲ. 부전승과 오사 ----------
-@S('Ⅲ. 부전승·오사')
-def s_bujunseung(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅲ. 부전승·오사', page, total)
-    add_title(slide, '부전승(不戰勝) — 백전백승은 최선이 아니다')
-    add_textbox(slide, Inches(0.5), Inches(2.3), Inches(12.3), Inches(0.8),
-                '百 戰 百 勝   非 善 之 善 者 也',
-                font_size=30, bold=True, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.2), Inches(12.3), Inches(0.8),
-                '不 戰 而 屈 人 之 兵   善 之 善 者 也',
-                font_size=32, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(4.1), Inches(12.3), Inches(0.5),
-                '백전백승 비선지선자야 · 부전이굴인지병 선지선자야',
-                font_size=15, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(4.6), Inches(12.3), Inches(0.4),
-                '— 모공편 제3', font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-    add_rule(slide, Inches(5.5), Inches(5.2), Inches(2.3), color=RULE, weight=1.5)
-    add_textbox(slide, Inches(0.5), Inches(5.5), Inches(12.3), Inches(0.6),
-                '백번 싸워 백번 이기는 것은 최선이 아니다',
-                font_size=18, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.1), Inches(12.3), Inches(0.6),
-                '싸우지 않고 적의 군대를 굴복시키는 것이 최선의 최선이다',
-                font_size=20, bold=True, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.8), Inches(12.3), Inches(0.4),
-                '— 전쟁을 미화하지 않은, 가장 신중한 전략의 고전',
-                font_size=14, color=SUB, align=PP_ALIGN.CENTER)
-
-
-@S('Ⅲ. 부전승·오사')
-def s_4_grades(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅲ. 부전승·오사', page, total)
-    add_title(slide, '승리의 4등급 — 어떤 승리를 추구할 것인가')
-    grades = [
-        ('최상',  '伐謀', '벌모', '적의 전략(謀)을 무력화 — 미연에 막는다', ACCENT),
-        ('차선',  '伐交', '벌교', '적의 동맹(交)을 와해 — 고립시킨다', RGBColor(0xB5, 0x4B, 0x4B)),
-        ('하책',  '伐兵', '벌병', '적의 군대(兵)를 공격 — 정면 충돌', RGBColor(0x70, 0x70, 0x70)),
-        ('최하책','攻城', '공성', '적의 성(城)을 공격 — 최대 손실', SUB),
-    ]
-    top = 2.3
-    for rank, han, eum, desc, color in grades:
-        add_filled_rect(slide, Inches(0.7), Inches(top), Inches(1.6), Inches(1.0), color)
-        add_textbox(slide, Inches(0.7), Inches(top + 0.28), Inches(1.6), Inches(0.5),
-                    rank, font_size=18, bold=True,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(2.5), Inches(top), Inches(2.0), Inches(1.0), PALE)
-        add_textbox(slide, Inches(2.5), Inches(top + 0.1), Inches(2.0), Inches(0.5),
-                    han, font_size=24, bold=True, color=ACCENT,
-                    align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(2.5), Inches(top + 0.6), Inches(2.0), Inches(0.4),
-                    eum, font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(4.7), Inches(top + 0.3), Inches(8.2), Inches(0.5),
-                    desc, font_size=16, color=INK)
-        top += 1.15
-
-
-@S('Ⅲ. 부전승·오사')
-def s_5_factors(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅲ. 부전승·오사', page, total)
-    add_title(slide, '오사(五事) — 전쟁을 결정짓는 다섯 근본 요소', '— 시계편 제1')
-    factors = [
-        ('道', '도', '군주와 백성의 일체감 — 대의명분',  '명분과 비전'),
-        ('天', '천', '기후·계절·타이밍',                  '외부 환경'),
-        ('地', '지', '지형·거리·경쟁 환경',                '시장·지형'),
-        ('將', '장', '지(智)·신(信)·인(仁)·용(勇)·엄(嚴)','리더십'),
-        ('法', '법', '편제·규율·보급 — 조직 시스템',      '체계와 시스템'),
-    ]
-    top = 2.2
-    for han, eum, desc, modern in factors:
-        add_filled_rect(slide, Inches(0.7), Inches(top), Inches(1.0), Inches(0.85), ACCENT)
-        add_textbox(slide, Inches(0.7), Inches(top + 0.1), Inches(1.0), Inches(0.6),
-                    han, font_size=32, bold=True,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(1.9), Inches(top), Inches(1.0), Inches(0.85), PALE)
-        add_textbox(slide, Inches(1.9), Inches(top + 0.22), Inches(1.0), Inches(0.5),
-                    eum, font_size=18, bold=True, color=INK, align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(3.1), Inches(top + 0.18), Inches(6.5), Inches(0.5),
-                    desc, font_size=15, color=INK)
-        add_filled_rect(slide, Inches(9.8), Inches(top), Inches(2.9), Inches(0.85), RGBColor(0xFA, 0xFA, 0xFA))
-        add_textbox(slide, Inches(9.8), Inches(top + 0.22), Inches(2.9), Inches(0.5),
-                    f'현대: {modern}', font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-        top += 0.97
-
-
-# ---------- Ⅳ. 허실·기정·세 ----------
-@S('Ⅳ. 허실·기정·세')
-def s_heoshil(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅳ. 허실·기정·세', page, total)
-    add_title(slide, '허실(虛實) — 빈 곳을 치고, 내 빈 곳을 감추라')
-    add_textbox(slide, Inches(0.5), Inches(2.3), Inches(12.3), Inches(0.9),
-                '避  實  而  擊  虛',
-                font_size=44, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.3), Inches(12.3), Inches(0.5),
-                '피실이격허 — 실(實)한 곳을 피하고 허(虛)한 곳을 친다',
-                font_size=18, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.9), Inches(12.3), Inches(0.4),
-                '— 허실편 제6', font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-    add_rule(slide, Inches(5.5), Inches(4.5), Inches(2.3), color=RULE, weight=1.5)
-    add_textbox(slide, Inches(0.5), Inches(4.8), Inches(12.3), Inches(0.9),
-                '致 人 而 不 致 於 人',
-                font_size=38, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(5.85), Inches(12.3), Inches(0.5),
-                '치인이부치어인 — 적을 끌어오지, 끌려가지 않는다',
-                font_size=18, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.6), Inches(12.3), Inches(0.4),
-                '핵심은 주도권(initiative)의 장악',
-                font_size=15, bold=True, color=SUB, align=PP_ALIGN.CENTER)
-
-
-@S('Ⅳ. 허실·기정·세')
-def s_gijeong(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅳ. 허실·기정·세', page, total)
-    add_title(slide, '기정(奇正) — 정공(正)과 기습(奇)의 조화')
-    add_textbox(slide, Inches(0.5), Inches(2.3), Inches(12.3), Inches(0.9),
-                '以 正 合   以 奇 勝',
-                font_size=44, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.3), Inches(12.3), Inches(0.5),
-                '이정합 이기승 — 정(正)으로 맞서고, 기(奇)로 이긴다',
-                font_size=17, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.85), Inches(12.3), Inches(0.4),
-                '— 병세편 제5', font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-    # 좌우 정 vs 기
-    add_filled_rect(slide, Inches(0.7), Inches(4.5), Inches(5.9), Inches(2.4), PALE)
-    add_textbox(slide, Inches(0.7), Inches(4.65), Inches(5.9), Inches(0.5),
-                '正 — 정공(正攻)', font_size=22, bold=True, color=ACCENT,
-                align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.9), Inches(5.3), Inches(5.5), Inches(1.5),
-                '정규적·예측 가능한 본대\n적을 묶어두는 주력',
-                font_size=15, color=INK, align=PP_ALIGN.CENTER)
-    add_filled_rect(slide, Inches(6.8), Inches(4.5), Inches(5.9), Inches(2.4), PALE)
-    add_textbox(slide, Inches(6.8), Inches(4.65), Inches(5.9), Inches(0.5),
-                '奇 — 기습(奇襲)', font_size=22, bold=True, color=ACCENT,
-                align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(7.0), Inches(5.3), Inches(5.5), Inches(1.5),
-                '비정규적·기상천외한 별동대\n결정적 승리를 가르는 카드',
-                font_size=15, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(7.0), Inches(12.3), Inches(0.4),
-                '奇正相生 — 정·기는 끝없이 순환하며 무한한 변화를 낳는다',
-                font_size=15, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-
-
-@S('Ⅳ. 허실·기정·세')
-def s_se(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅳ. 허실·기정·세', page, total)
-    add_title(slide, '세(勢) — 형세(形勢)를 만들어 압도하라')
-    add_textbox(slide, Inches(0.5), Inches(2.3), Inches(12.3), Inches(0.9),
-                '激 水 之 疾   至 於 漂 石 者   勢 也',
-                font_size=30, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.2), Inches(12.3), Inches(0.5),
-                '격수지질 지어표석자 세야',
-                font_size=15, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.7), Inches(12.3), Inches(0.4),
-                '— 병세편 제5', font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-    add_rule(slide, Inches(5.5), Inches(4.3), Inches(2.3), color=RULE, weight=1.5)
-    add_textbox(slide, Inches(0.5), Inches(4.5), Inches(12.3), Inches(0.6),
-                '"급류가 빠르게 흘러 돌을 떠내려 보내는 것 — 그것이 세(勢)다"',
-                font_size=18, bold=True, color=INK, align=PP_ALIGN.CENTER)
-    add_filled_rect(slide, Inches(0.7), Inches(5.4), Inches(11.9), Inches(1.5), PALE)
-    add_paragraphs(slide, Inches(0.9), Inches(5.55), Inches(11.5), Inches(1.3), [
-        ('求之於勢   不責於人', {'font_size': 22, 'bold': True, 'color': ACCENT, 'align': PP_ALIGN.CENTER}),
-        ('세(勢)에서 승리를 구하지, 개인에게 책임을 돌리지 않는다',
-         {'font_size': 16, 'color': INK, 'align': PP_ALIGN.CENTER, 'space_before': 4}),
-        ('좋은 리더는 시스템을 설계하여 평범한 사람도 탁월한 성과를 내게 한다',
-         {'font_size': 14, 'color': SUB, 'align': PP_ALIGN.CENTER, 'space_before': 4}),
-    ], line_spacing=1.3)
-
-
-# ---------- Ⅴ. 지피지기와 변화 ----------
-@S('Ⅴ. 지·변화')
-def s_jipijigi(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅴ. 지·변화', page, total)
-    add_title(slide, '지피지기(知彼知己) — 지(知)의 세 수준')
-    levels = [
-        ('知 彼 知 己',  '지피지기',    '百 戰 不 殆', '백전불태', '백 번 싸워도 위태롭지 않다', ACCENT),
-        ('不知彼而知己', '부지피이지기', '一 勝 一 負', '일승일부', '한 번 이기고 한 번 진다',     RGBColor(0x90, 0x60, 0x60)),
-        ('不知彼不知己', '부지피부지기', '每 戰 必 殆', '매전필태', '매번 싸울 때마다 위태롭다', SUB),
-    ]
-    top = 2.4
-    for han, eum, han2, eum2, mean, color in levels:
-        add_filled_rect(slide, Inches(0.6), Inches(top), Inches(4.2), Inches(1.2), PALE)
-        add_textbox(slide, Inches(0.6), Inches(top + 0.15), Inches(4.2), Inches(0.5),
-                    han, font_size=20, bold=True, color=color, align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(0.6), Inches(top + 0.72), Inches(4.2), Inches(0.4),
-                    eum, font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-        # 화살표
-        add_textbox(slide, Inches(4.8), Inches(top + 0.4), Inches(0.5), Inches(0.5),
-                    '▶', font_size=18, color=color, align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(5.4), Inches(top), Inches(3.2), Inches(1.2), color)
-        add_textbox(slide, Inches(5.4), Inches(top + 0.15), Inches(3.2), Inches(0.5),
-                    han2, font_size=20, bold=True,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(5.4), Inches(top + 0.72), Inches(3.2), Inches(0.4),
-                    eum2, font_size=13,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_textbox(slide, Inches(8.8), Inches(top + 0.4), Inches(4.3), Inches(0.5),
-                    mean, font_size=15, color=INK)
-        top += 1.4
-    add_textbox(slide, Inches(0.5), Inches(7.0), Inches(12.3), Inches(0.4),
-                '※ "백전백승"이 아니라 "백전불태" — 화려한 승리보다 안전을 추구하는 사상',
-                font_size=14, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-
-
-@S('Ⅴ. 지·변화')
-def s_water(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅴ. 지·변화', page, total)
-    add_title(slide, '병형상수(兵形象水) — 군대는 물과 같다')
-    add_textbox(slide, Inches(0.5), Inches(2.2), Inches(12.3), Inches(0.9),
-                '兵   形   象   水',
-                font_size=64, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.3), Inches(12.3), Inches(0.5),
-                '병형상수 — "군대의 형태는 물과 같다"',
-                font_size=17, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.85), Inches(12.3), Inches(0.4),
-                '— 허실편 제6', font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-    add_rule(slide, Inches(5.5), Inches(4.5), Inches(2.3), color=RULE, weight=1.5)
-    items = [
-        ('높은 곳을 피하고 낮은 곳으로',  '강한 곳 피하고 약한 곳 공격'),
-        ('지형에 따라 형태가 변한다',    '상황에 따라 전략을 바꾼다'),
-        ('일정한 형태가 없다(無常形)',    '병법에 일정한 형세는 없다(兵無常勢)'),
-    ]
-    top = 4.75
-    for left, right in items:
-        add_textbox(slide, Inches(0.7), Inches(top), Inches(5.8), Inches(0.4),
-                    f'• {left}', font_size=15, color=ACCENT, bold=True, align=PP_ALIGN.RIGHT)
-        add_textbox(slide, Inches(6.8), Inches(top), Inches(5.8), Inches(0.4),
-                    f'→  {right}', font_size=15, color=INK)
-        top += 0.55
-
-
-@S('Ⅴ. 지·변화')
-def s_seonseung(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅴ. 지·변화', page, total)
-    add_title(slide, '선승이후구전(先勝而後求戰) — 준비의 철학')
-    add_textbox(slide, Inches(0.5), Inches(2.3), Inches(12.3), Inches(0.9),
-                '勝 兵 先 勝 而 後 求 戰',
-                font_size=36, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.2), Inches(12.3), Inches(0.9),
-                '敗 兵 先 戰 而 後 求 勝',
-                font_size=30, bold=True, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(4.15), Inches(12.3), Inches(0.5),
-                '승병선승이후구전 · 패병선전이후구승',
-                font_size=15, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(4.65), Inches(12.3), Inches(0.4),
-                '— 군형편 제4', font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-    add_rule(slide, Inches(5.5), Inches(5.25), Inches(2.3), color=RULE, weight=1.5)
-    add_textbox(slide, Inches(0.5), Inches(5.55), Inches(12.3), Inches(0.6),
-                '이기는 군대는 먼저 이겨놓고 싸우고,',
-                font_size=20, bold=True, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.2), Inches(12.3), Inches(0.6),
-                '지는 군대는 먼저 싸운 뒤에 이기려 한다',
-                font_size=20, bold=True, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.9), Inches(12.3), Inches(0.4),
-                '승리는 전장에서 결정되는 것이 아니라, 전장에 들어서기 전에 이미 결정된다',
+    for i, (era, desc) in enumerate(rows):
+        y = Inches(2.4 + i * 0.75)
+        add_filled_rect(slide, Inches(0.7), y, Inches(2.4), Inches(0.6), PALE)
+        add_textbox(slide, Inches(0.7), y, Inches(2.4), Inches(0.6),
+                    era, font_size=14, bold=True, color=ACCENT,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(3.3), y + Inches(0.05), Inches(9.6), Inches(0.55),
+                    desc, font_size=14, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+    add_textbox(slide, Inches(0.7), Inches(7.0), Inches(12.0), Inches(0.4),
+                '은작산 죽간 — 『손자병법』과 『손빈병법』이 별개의 책임이 처음 명확히 입증된 결정적 발견',
                 font_size=13, color=SUB, align=PP_ALIGN.CENTER)
 
 
-# ---------- Ⅵ. 명구절 ----------
-def make_quote_slide(section, hanmun, eum, mean, ref, *, hanmun_size=46):
-    def renderer(slide, page, total):
-        set_white_background(slide)
-        add_page_header(slide, section, page, total)
-        add_textbox(slide, Inches(0.5), Inches(1.2), Inches(12.3), Inches(2.4),
-                    hanmun, font_size=hanmun_size, bold=True, color=ACCENT,
-                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        add_textbox(slide, Inches(0.5), Inches(3.7), Inches(12.3), Inches(0.5),
-                    eum, font_size=20, color=SUB, align=PP_ALIGN.CENTER)
-        add_rule(slide, Inches(5.5), Inches(4.4), Inches(2.3), color=RULE, weight=1.5)
-        add_textbox(slide, Inches(0.5), Inches(4.7), Inches(12.3), Inches(1.5),
-                    mean, font_size=22, bold=True, color=INK,
-                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        add_textbox(slide, Inches(0.5), Inches(6.5), Inches(12.3), Inches(0.4),
-                    f'— {ref}', font_size=15, color=SUB, align=PP_ALIGN.CENTER)
-    return renderer
+# ============== Ⅳ. 13편의 구조 ==============
+SEC4 = 'Ⅳ. 13편의 구조'
 
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (1/10)',
-    '兵者 國之大事\n死生之地 存亡之道',
-    '병자 국지대사 · 사생지지 존망지도',
-    '전쟁은 나라의 중대사이니, 백성의 생사와 나라의 존망이 달린 길이라\n살피지 않을 수 없다',
-    '시계편 제1', hanmun_size=34), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (2/10)',
-    '不戰而屈人之兵\n善之善者也',
-    '부전이굴인지병 · 선지선자야',
-    '싸우지 않고 적의 군대를 굴복시키는 것이 최선의 최선이다',
-    '모공편 제3', hanmun_size=36), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (3/10)',
-    '知 彼 知 己   百 戰 不 殆',
-    '지피지기 백전불태',
-    '적을 알고 나를 알면 백 번 싸워도 위태롭지 않다',
-    '모공편 제3', hanmun_size=42), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (4/10)',
-    '勝 兵 先 勝 而 後 求 戰',
-    '승병선승이후구전',
-    '이기는 군대는 먼저 이겨놓고 싸운다',
-    '군형편 제4', hanmun_size=40), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (5/10)',
-    '凡 戰 者   以 正 合   以 奇 勝',
-    '범전자 이정합 이기승',
-    '무릇 전투란 정(正)으로 맞서고 기(奇)로 이기는 것이다',
-    '병세편 제5', hanmun_size=34), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (6/10)',
-    '故 善 戰 者\n致 人 而 不 致 於 人',
-    '고선전자 · 치인이부치어인',
-    '잘 싸우는 자는 적을 끌어오지, 끌려가지 않는다 — 주도권의 원리',
-    '허실편 제6', hanmun_size=34), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (7/10)',
-    '其疾如風  其徐如林\n侵掠如火  不動如山',
-    '기질여풍 기서여림 · 침략여화 부동여산',
-    '바람처럼 빠르고, 숲처럼 고요하며,\n불처럼 공격하고, 산처럼 움직이지 않는다 — 풍림화산(風林火山)',
-    '군쟁편 제7', hanmun_size=28), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (8/10)',
-    '投之亡地然後存\n陷之死地然後生',
-    '투지망지연후존 · 함지사지연후생',
-    '망할 곳에 던져야 살고, 죽을 곳에 빠뜨려야 산다 — 사지즉전(死地則戰)',
-    '구지편 제11', hanmun_size=34), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (9/10)',
-    '主不可以怒而興師\n將不可以慍而致戰',
-    '주불가이노이흥사 · 장불가이온이치전',
-    '임금은 분노로 군대를 일으켜서는 안 되고,\n장수는 격분하여 싸움을 일으켜서는 안 된다',
-    '화공편 제12', hanmun_size=30), 'Ⅵ. 명구절'))
-
-SLIDES.append((make_quote_slide('Ⅵ. 명구절 (10/10)',
-    '明君賢將  所以動而勝人者\n先 知 也',
-    '명군현장 소이동이승인자 · 선지야',
-    '명군(明君)과 현장(賢將)이 움직이는 곳마다 승리하는 까닭은\n미리 아는 것(先知) 때문이다 — 정보전의 중요성',
-    '용간편 제13', hanmun_size=28), 'Ⅵ. 명구절'))
-
-
-# ---------- Ⅶ. 구조 ----------
-@S('Ⅶ. 구조')
-def s_logic_structure(slide, page, total):
+@S(SEC4)
+def iv_flow(slide, n, t):
     set_white_background(slide)
-    add_page_header(slide, 'Ⅶ. 구조', page, total)
-    add_title(slide, '13편의 논리 구조 — 체계적 전개')
-    blocks = [
-        ('총론',     '시계·작전',          '1~2편',  '전쟁 자체의 본질과 비용'),
-        ('전략 원칙', '모공·군형·병세·허실', '3~6편',  '부전승·선승·기정·허실의 4대 원칙'),
-        ('실전 운용', '군쟁·구변·행군·지형·구지', '7~11편', '기동·변통·지형 활용'),
-        ('특수 기법', '화공·용간',          '12~13편', '화공과 정보전'),
-    ]
-    top = 2.3
-    for tag, name, scope, desc in blocks:
-        add_filled_rect(slide, Inches(0.6), Inches(top), Inches(2.4), Inches(1.0), ACCENT)
-        add_textbox(slide, Inches(0.6), Inches(top + 0.3), Inches(2.4), Inches(0.5),
-                    tag, font_size=20, bold=True,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(3.2), Inches(top), Inches(9.5), Inches(1.0), PALE)
-        add_textbox(slide, Inches(3.4), Inches(top + 0.12), Inches(5.5), Inches(0.4),
-                    name, font_size=16, bold=True, color=INK)
-        add_textbox(slide, Inches(9.5), Inches(top + 0.12), Inches(3.0), Inches(0.4),
-                    scope, font_size=14, color=SUB, align=PP_ALIGN.RIGHT)
-        add_textbox(slide, Inches(3.4), Inches(top + 0.55), Inches(9.1), Inches(0.4),
-                    desc, font_size=14, color=SUB)
-        top += 1.15
-
-
-@S('Ⅶ. 구조')
-def s_brevity(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅶ. 구조', page, total)
-    add_title(slide, '간결함의 미학 — "한 문장 = 한 원칙"')
-    add_textbox(slide, Inches(0.7), Inches(2.4), Inches(5.5), Inches(2.0),
-                '약 6,000', font_size=140, bold=True, color=ACCENT,
-                align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.7), Inches(4.5), Inches(5.5), Inches(0.5),
-                '자(字)', font_size=22, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.7), Inches(5.0), Inches(5.5), Inches(0.5),
-                '— 손자병법 전체 분량',
-                font_size=14, color=SUB, align=PP_ALIGN.CENTER, bold=True)
-    add_paragraphs(slide, Inches(7.0), Inches(2.4), Inches(6.0), Inches(4.5), [
-        ('극도로 압축된 문장', {'bold': True, 'font_size': 20, 'color': ACCENT}),
-        ('논어보다도 짧은 분량 안에', {'font_size': 16}),
-        ('완성된 전략 체계를 담아냈다', {'font_size': 16}),
-        ('', {'font_size': 6}),
-        ('독립적 인용 가능성', {'bold': True, 'font_size': 20, 'color': ACCENT, 'space_before': 10}),
-        ('한 문장이 하나의 원칙을 담고 있어',
-         {'font_size': 16}),
-        ('어디서든 단독으로 인용·활용 가능',
-         {'font_size': 16}),
-        ('', {'font_size': 6}),
-        ('보편성의 비밀', {'bold': True, 'font_size': 20, 'color': ACCENT, 'space_before': 10}),
-        ('구체 사례 대신 원리만 남겨',
-         {'font_size': 16}),
-        ('어느 시대·어느 분야에도 적용 가능',
-         {'font_size': 16}),
-    ], line_spacing=1.3)
-
-
-@S('Ⅶ. 구조')
-def s_metaphors(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅶ. 구조', page, total)
-    add_title(slide, '비유의 힘 — 추상을 이미지로')
-    metaphors = [
-        ('水',   '물',      '유연한 변화와 적응의 상징'),
-        ('激水', '급류',    '돌을 떠내려 보내는 세(勢)의 위력'),
-        ('率然', '상산의 뱀', '머리·꼬리·중간이 유기적으로 호응하는 조직'),
-        ('風林火山', '풍림화산', '상황별 군대 운용의 네 가지 모습'),
-    ]
-    top = 2.3
-    for han, kor, desc in metaphors:
-        add_filled_rect(slide, Inches(0.6), Inches(top), Inches(2.5), Inches(1.0), ACCENT)
-        add_textbox(slide, Inches(0.6), Inches(top + 0.2), Inches(2.5), Inches(0.6),
-                    han, font_size=28, bold=True,
-                    color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(3.3), Inches(top), Inches(2.5), Inches(1.0), PALE)
-        add_textbox(slide, Inches(3.3), Inches(top + 0.32), Inches(2.5), Inches(0.5),
-                    kor, font_size=20, bold=True, color=INK, align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(6.0), Inches(top), Inches(6.7), Inches(1.0),
-                        RGBColor(0xFA, 0xFA, 0xFA))
-        add_textbox(slide, Inches(6.2), Inches(top + 0.3), Inches(6.4), Inches(0.5),
-                    desc, font_size=16, color=INK)
-        top += 1.15
-
-
-@S('Ⅶ. 구조')
-def s_dual(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅶ. 구조', page, total)
-    add_title(slide, '이중 구조 — 전쟁론이자 반전론')
-    add_filled_rect(slide, Inches(0.6), Inches(2.3), Inches(6.0), Inches(4.5), PALE)
-    add_textbox(slide, Inches(0.6), Inches(2.5), Inches(6.0), Inches(0.5),
-                '전쟁론의 얼굴', font_size=20, bold=True, color=ACCENT,
-                align=PP_ALIGN.CENTER)
-    add_paragraphs(slide, Inches(0.9), Inches(3.3), Inches(5.5), Inches(3.3), [
-        ('• 13편 전체가 전쟁의 기술서', {'font_size': 17}),
-        ('• 정보·기동·기습·심리·화공까지', {'font_size': 17, 'space_before': 8}),
-        ('  전쟁의 모든 국면을 다룬다', {'font_size': 16, 'color': SUB}),
-        ('• 동서양 군사학의 정전(正典)', {'font_size': 17, 'space_before': 8}),
-        ('  — 가장 뛰어난 병서', {'font_size': 14, 'color': ACCENT, 'bold': True}),
-    ], line_spacing=1.35)
-    add_filled_rect(slide, Inches(6.8), Inches(2.3), Inches(6.0), Inches(4.5), PALE)
-    add_textbox(slide, Inches(6.8), Inches(2.5), Inches(6.0), Inches(0.5),
-                '반전론의 얼굴', font_size=20, bold=True, color=ACCENT,
-                align=PP_ALIGN.CENTER)
-    add_paragraphs(slide, Inches(7.1), Inches(3.3), Inches(5.5), Inches(3.3), [
-        ('• "싸우지 않고 이기라" — 부전승', {'font_size': 17}),
-        ('• "분노로 싸우지 마라" — 화공편 경고',
-         {'font_size': 17, 'space_before': 8}),
-        ('• "전쟁은 국지대사 — 살피지 않을 수 없다"',
-         {'font_size': 16, 'color': SUB, 'space_before': 8}),
-        ('• 전쟁의 파괴력에 대한 가장 신중한 경고',
-         {'font_size': 14, 'color': ACCENT, 'bold': True, 'space_before': 10}),
-    ], line_spacing=1.35)
-
-
-# ---------- Ⅷ. 현대적 의의 ----------
-def make_modern_slide(title, subtitle, lines):
-    def renderer(slide, page, total):
-        set_white_background(slide)
-        add_page_header(slide, 'Ⅷ. 현대적 의의', page, total)
-        add_title(slide, title, subtitle)
-        add_paragraphs(slide, Inches(0.9), Inches(2.4), Inches(11.5), Inches(4.6),
-                       lines, line_spacing=1.5, font_size=18)
-    return renderer
-
-
-SLIDES.append((make_modern_slide(
-    '현대 ① — 경영 전략',
-    '손자병법이 비즈니스 전략의 고전이 된 까닭',
-    [
-        ('부전승(不戰勝)', {'font_size': 22, 'bold': True, 'color': ACCENT}),
-        ('  → 블루오션 전략 · 경쟁 회피 · 시장 재정의', {'font_size': 16, 'space_before': 4}),
-        ('속전속결(速戰速決)', {'font_size': 22, 'bold': True, 'color': ACCENT, 'space_before': 10}),
-        ('  → MVP(Minimum Viable Product) · 린 스타트업', {'font_size': 16, 'space_before': 4}),
-        ('지피지기(知彼知己)', {'font_size': 22, 'bold': True, 'color': ACCENT, 'space_before': 10}),
-        ('  → 시장 조사 · 경쟁사 분석 · SWOT', {'font_size': 16, 'space_before': 4}),
-        ('피실격허(避實擊虛)', {'font_size': 22, 'bold': True, 'color': ACCENT, 'space_before': 10}),
-        ('  → 니치 마켓 공략 · 선택과 집중', {'font_size': 16, 'space_before': 4}),
-    ]), 'Ⅷ. 현대적 의의'))
-
-SLIDES.append((make_modern_slide(
-    '현대 ② — 리더십',
-    '시스템 설계자로서의 리더',
-    [
-        ('세(勢)에서 승리를 구하라 — 求之於勢', {'font_size': 22, 'bold': True, 'color': ACCENT}),
-        ('  개인의 영웅성이 아니라 시스템 설계가 승부를 가른다',
-         {'font_size': 16, 'space_before': 4}),
-        ('  → 좋은 리더는 평범한 사람도 탁월한 성과를 내게 한다',
-         {'font_size': 15, 'color': SUB}),
-        ('', {'font_size': 8}),
-        ('장수의 다섯 덕목 (智·信·仁·勇·嚴)', {'font_size': 22, 'bold': True, 'color': ACCENT, 'space_before': 12}),
-        ('  지혜·신뢰·인간미·용기·엄정함의 균형',
-         {'font_size': 16, 'space_before': 4}),
-        ('  → 어느 한쪽으로 치우치면 무너진다',
-         {'font_size': 15, 'color': SUB}),
-    ]), 'Ⅷ. 현대적 의의'))
-
-SLIDES.append((make_modern_slide(
-    '현대 ③ — 일상의 지혜',
-    '개인의 삶에 적용되는 손자',
-    [
-        ('선승이후구전(先勝而後求戰)', {'font_size': 22, 'bold': True, 'color': ACCENT}),
-        ('  → 준비 없이 도전하지 않는다 · 사전 준비의 가치',
-         {'font_size': 16, 'space_before': 4}),
-        ('노이흥사(怒而興師) 금지', {'font_size': 22, 'bold': True, 'color': ACCENT, 'space_before': 10}),
-        ('  → 감정에 휩쓸린 중요 결정을 피하라',
-         {'font_size': 16, 'space_before': 4}),
-        ('병형상수(兵形象水)', {'font_size': 22, 'bold': True, 'color': ACCENT, 'space_before': 10}),
-        ('  → 고정된 패턴에 얽매이지 마라 · 상황에 맞게 변하라',
-         {'font_size': 16, 'space_before': 4}),
-    ]), 'Ⅷ. 현대적 의의'))
-
-
-# ---------- Ⅸ. 비교 ----------
-@S('Ⅸ. 비교')
-def s_compare(slide, page, total):
-    set_white_background(slide)
-    add_page_header(slide, 'Ⅸ. 비교', page, total)
-    add_title(slide, '손자병법과 다른 사상의 비교')
+    add_page_header(slide, SEC4, n, t)
+    add_title(slide, '13편의 흐름 — 「계산 → 운용 → 변화 → 정보」',
+              '한 인물이 설계한 단일 체계의 논리적 전개')
     rows = [
-        ('클라우제비츠 (전쟁론)', '전쟁을 정치의 연장으로 봄', '손자: 부전승 / 클라우제비츠: 결전 중시'),
-        ('마키아벨리 (군주론)',   '현실주의적 권력관',         '손자: 도(道) 우선 / 마키아벨리: 권모술수'),
-        ('노자 (도덕경)',         '유연함과 물의 비유',         '노자: 무위(無爲) / 손자: 적극적 전략'),
-        ('공자 (논어)',           '인(仁)의 가치 중시',         '공자: 도덕 우선 / 손자: 전략적 효용'),
-        ('순자',                  '현실주의적 인간관',           '순자: 제도 설계 / 손자: 전장 설계'),
+        ('단계 1',  '계산',     '1~3편 시계·작전·모공', '전쟁의 전제 — 「하기 전에 다 끝난다」'),
+        ('단계 2',  '운용',     '4~6편 군형·병세·허실', '힘의 운용 — 형(形)·세(勢)·허실(虛實)'),
+        ('단계 3',  '기동',     '7~8편 군쟁·구변',     '전장의 움직임 — 우직지계와 변통'),
+        ('단계 4',  '환경',     '9~11편 행군·지형·구지', '환경의 활용 — 행군·지형·9가지 상황'),
+        ('단계 5',  '특수·정보', '12~13편 화공·용간',    '특수 전술과 정보 — 결정적 비대칭'),
     ]
-    top = 2.0
-    # 헤더
-    add_filled_rect(slide, Inches(0.5), Inches(top), Inches(3.5), Inches(0.55), ACCENT)
-    add_textbox(slide, Inches(0.5), Inches(top + 0.1), Inches(3.5), Inches(0.4),
-                '비교 대상', font_size=15, bold=True,
-                color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-    add_filled_rect(slide, Inches(4.1), Inches(top), Inches(4.0), Inches(0.55), SUB)
-    add_textbox(slide, Inches(4.1), Inches(top + 0.1), Inches(4.0), Inches(0.4),
-                '공통점', font_size=15, bold=True,
-                color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-    add_filled_rect(slide, Inches(8.2), Inches(top), Inches(4.6), Inches(0.55), SUB)
-    add_textbox(slide, Inches(8.2), Inches(top + 0.1), Inches(4.6), Inches(0.4),
-                '차이점', font_size=15, bold=True,
-                color=RGBColor(0xFF, 0xFF, 0xFF), align=PP_ALIGN.CENTER)
-    row_h = 0.85
-    for r_idx, row in enumerate(rows):
-        y = top + 0.55 + r_idx * row_h
-        bg = RGBColor(0xFA, 0xFA, 0xFA) if r_idx % 2 == 0 else RGBColor(0xFF, 0xFF, 0xFF)
-        add_filled_rect(slide, Inches(0.5), Inches(y), Inches(3.5), Inches(row_h), PALE)
-        add_textbox(slide, Inches(0.55), Inches(y + 0.2), Inches(3.4), Inches(0.5),
-                    row[0], font_size=14, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(4.1), Inches(y), Inches(4.0), Inches(row_h), bg)
-        add_textbox(slide, Inches(4.2), Inches(y + 0.22), Inches(3.8), Inches(0.5),
-                    row[1], font_size=13, color=INK, align=PP_ALIGN.CENTER)
-        add_filled_rect(slide, Inches(8.2), Inches(y), Inches(4.6), Inches(row_h), bg)
-        add_textbox(slide, Inches(8.3), Inches(y + 0.22), Inches(4.4), Inches(0.5),
-                    row[2], font_size=13, color=INK, align=PP_ALIGN.CENTER)
+    for i, (step, kind, vol, desc) in enumerate(rows):
+        y = Inches(2.4 + i * 0.9)
+        add_filled_rect(slide, Inches(0.7), y, Inches(1.2), Inches(0.75), ACCENT)
+        add_textbox(slide, Inches(0.7), y, Inches(1.2), Inches(0.75),
+                    step, font_size=14, bold=True, color=WHITE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_filled_rect(slide, Inches(2.0), y, Inches(1.4), Inches(0.75), PALE)
+        add_textbox(slide, Inches(2.0), y, Inches(1.4), Inches(0.75),
+                    kind, font_size=15, bold=True, color=INK,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(3.5), y + Inches(0.05), Inches(3.5), Inches(0.7),
+                    vol, font_size=13, bold=True, color=ACCENT,
+                    anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, Inches(7.1), y + Inches(0.05), Inches(5.8), Inches(0.7),
+                    desc, font_size=13, color=INK, anchor=MSO_ANCHOR.MIDDLE)
 
 
-# ---------- Ⅹ. 마무리 ----------
-@S('Ⅹ. 마무리')
-def s_summary(slide, page, total):
+@S(SEC4)
+def iv_table(slide, n, t):
     set_white_background(slide)
-    add_page_header(slide, 'Ⅹ. 마무리', page, total)
-    add_title(slide, '한 문장으로 정리하는 손자병법')
-    add_filled_rect(slide, Inches(0.7), Inches(2.3), Inches(11.9), Inches(4.5), PALE)
-    add_paragraphs(slide, Inches(1.1), Inches(2.7), Inches(11.1), Inches(4.1), [
-        ('전쟁의 가부(可否)를 신중히 판단하고 (오사칠계)',
-         {'font_size': 22, 'bold': True, 'color': INK, 'align': PP_ALIGN.CENTER}),
-        ('', {'font_size': 8}),
-        ('가능하면 싸우지 않고 이기며 (부전승)',
-         {'font_size': 22, 'bold': True, 'color': ACCENT, 'align': PP_ALIGN.CENTER, 'space_before': 8}),
-        ('', {'font_size': 8}),
-        ('반드시 싸워야 한다면 먼저 이길 조건을 갖춘다 (선승이후구전)',
-         {'font_size': 22, 'bold': True, 'color': ACCENT, 'align': PP_ALIGN.CENTER, 'space_before': 8}),
-        ('', {'font_size': 8}),
-        ('이 모든 것의 기반은',
-         {'font_size': 22, 'bold': True, 'color': INK, 'align': PP_ALIGN.CENTER, 'space_before': 8}),
-        ('정보(지피지기)와 유연한 변화(병무상세)다',
-         {'font_size': 22, 'bold': True, 'color': INK, 'align': PP_ALIGN.CENTER}),
-        ('', {'font_size': 8}),
-        ('— 전쟁을 다루지만, 결국은 신중함의 철학 —',
-         {'font_size': 18, 'bold': True, 'color': SUB, 'align': PP_ALIGN.CENTER, 'space_before': 10}),
-    ], line_spacing=1.2)
+    add_page_header(slide, SEC4, n, t)
+    add_title(slide, '13편 한 폭으로')
+    add_filled_rect(slide, Inches(0.7), Inches(2.2), Inches(12.0), Inches(0.45), INK)
+    headers = [('편', 0.8), ('편명', 3.3), ('핵심 주제', 7.9)]
+    x = Inches(0.7)
+    for label, w in headers:
+        add_textbox(slide, x, Inches(2.2), Inches(w), Inches(0.45),
+                    label, font_size=13, bold=True, color=WHITE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        x += Inches(w)
+    rows = [
+        ('1', '始計 시계',  '전쟁의 기본 계산 — 오사칠계(五事七計)'),
+        ('2', '作戰 작전',  '전쟁의 비용과 속전속결 — 졸속(拙速)'),
+        ('3', '謀攻 모공',  '전략적 승리 — 부전승, 지피지기 백전불태'),
+        ('4', '軍形 군형',  '공수의 형세 — 선승이후구전(先勝而後求戰)'),
+        ('5', '兵勢 병세',  '기정(奇正)의 운용 · 세(勢)의 활용'),
+        ('6', '虛實 허실',  '허와 실의 운용 · 주도권 장악 · 「피실격허」'),
+        ('7', '軍爭 군쟁',  '우직지계(迂直之計) · 풍림화산(風林火山)'),
+        ('8', '九變 구변',  '아홉 가지 변통 · 장수의 다섯 위험'),
+        ('9', '行軍 행군',  '행군과 진영 배치 · 적정(敵情) 관찰'),
+        ('10', '地形 지형', '여섯 가지 지형 · 장수의 리더십'),
+        ('11', '九地 구지', '아홉 가지 전장 상황 · 사지즉전(死地則戰)'),
+        ('12', '火攻 화공', '화공의 다섯 유형 · 전쟁의 신중함'),
+        ('13', '用間 용간', '정보전 · 다섯 종류의 간첩 — 「先知」'),
+    ]
+    for i, (no, name, desc) in enumerate(rows):
+        y = Inches(2.65 + i * 0.37)
+        bg = PALE if i % 2 == 0 else WHITE
+        add_filled_rect(slide, Inches(0.7), y, Inches(12.0), Inches(0.37), bg)
+        add_textbox(slide, Inches(0.7), y, Inches(0.8), Inches(0.37),
+                    no, font_size=13, bold=True, color=ACCENT,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(1.5), y, Inches(3.3), Inches(0.37),
+                    name, font_size=13, bold=True, color=INK,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, Inches(4.9), y, Inches(7.7), Inches(0.37),
+                    desc, font_size=12, color=INK, anchor=MSO_ANCHOR.MIDDLE)
 
 
-@S('Ⅹ. 마무리')
-def s_closing(slide, page, total):
+# ============== Ⅴ. 13편 깊이 읽기 ==============
+SEC5 = 'Ⅴ. 13편 깊이 읽기'
+
+def make_chapter_slide(num, total, name_han, name_kor, headline,
+                        original, modern, theme, point):
+    @S(SEC5)
+    def _slide(slide, n, t):
+        set_white_background(slide)
+        add_page_header(slide, f'{SEC5} ({num}/{total})', n, t)
+        add_textbox(slide, Inches(0.5), Inches(0.85), Inches(12.8), Inches(0.6),
+                    f'{name_han}  ({name_kor})',
+                    font_size=26, bold=True, color=INK, font_name='Batang')
+        add_textbox(slide, Inches(0.5), Inches(1.45), Inches(12.8), Inches(0.4),
+                    headline, font_size=14, color=SUB)
+        add_filled_rect(slide, Inches(0.7), Inches(2.0), Inches(12.0), Inches(1.5), PALE)
+        add_paragraphs(slide, Inches(1.0), Inches(2.1), Inches(11.5), Inches(1.4), [
+            (original, {'font_size': 18, 'bold': True, 'color': ACCENT, 'font_name': 'Batang'}),
+            (modern,   {'font_size': 13, 'color': SUB, 'space_before': 6}),
+        ], line_spacing=1.3)
+        add_textbox(slide, Inches(0.7), Inches(3.7), Inches(12.0), Inches(0.4),
+                    '◆ 핵심 가르침', font_size=14, bold=True, color=ACCENT)
+        add_paragraphs(slide, Inches(0.7), Inches(4.1), Inches(12.0), Inches(1.3),
+                       [(theme, {'font_size': 14, 'color': INK})], line_spacing=1.35)
+        add_textbox(slide, Inches(0.7), Inches(5.4), Inches(12.0), Inches(0.4),
+                    '◆ 오늘에의 적용', font_size=14, bold=True, color=ACCENT)
+        add_paragraphs(slide, Inches(0.7), Inches(5.8), Inches(12.0), Inches(1.4),
+                       [(point, {'font_size': 15, 'color': INK})], line_spacing=1.35)
+
+
+CHAPTERS = [
+    ('始計 시계', '시계', '제1편 — 전쟁의 기본 계산 · 오사칠계(五事七計)',
+     '兵 者  國 之 大 事  死 生 之 地  存 亡 之 道  不 可 不 察 也',
+     '전쟁은 나라의 중대사 / 죽고 사는 터전, 존속하고 망하는 길이니, 살피지 않을 수 없다',
+     '오사 — 道(도)·天(천)·地(지)·將(장)·法(법) / 칠계 — 일곱 가지 비교 분석 / 「兵者 詭道也」 — 전쟁은 본질적으로 속임수 / 「廟算多者勝」 — 묘산(廟算)에서 이기는 자가 실제로 이긴다',
+     '모든 전략적 결정의 출발점은 신중한 분석. 전쟁 전 「조정의 계산」이 곧 현대의 사업 계획·시장 분석.'),
+    ('作戰 작전', '작전', '제2편 — 전쟁의 비용과 속전속결',
+     '兵 聞 拙 速  未 睹 巧 之 久 也',
+     '전쟁에서 서툴더라도 빠른 것은 들었어도, 교묘하면서 오래 끄는 것은 본 적이 없다',
+     '졸속(拙速)의 원리 — 길게 끄는 완벽함보다 짧은 부족함이 낫다 / 전쟁 비용의 엄청남 — 하루 천금(日費千金) / 「智將務食於敵」 — 적의 식량으로 먹인다 — 현지 조달',
+     '완벽 강박을 버리고 빠른 실행 — 「good enough, but fast」. 보급선이 길수록 비용이 폭증.'),
+    ('謀攻 모공', '모공', '제3편 — 부전승의 철학 · 지피지기',
+     '不 戰 而 屈 人 之 兵  善 之 善 者 也    知 彼 知 己  百 戰 不 殆',
+     '싸우지 않고 굴복시키는 것이 최선 / 적을 알고 나를 알면 백 번 싸워도 위태롭지 않다',
+     '벌모(伐謀) → 벌교(伐交) → 벌병(伐兵) → 벌성(攻城)의 우선순위 / 「上兵伐謀」 — 최상의 병법은 적의 계책을 깬다 / 「知彼知己」 — 손자병법 전체에서 가장 유명한 명제',
+     '경쟁 이전에 정보·관계·전략으로 이긴다. 정면 충돌은 마지막 수단. 자기 인식과 상대 분석의 짝.'),
+    ('軍形 군형', '군형', '제4편 — 공수의 형세 · 선승이후구전',
+     '勝 兵 先 勝 而 後 求 戰  敗 兵 先 戰 而 後 求 勝',
+     '이기는 군대는 먼저 이기고 나서 싸우고, 지는 군대는 먼저 싸우고 나서 이기려 한다',
+     '「先勝而後求戰」 — 이긴 다음 싸운다 / 「不可勝在己 可勝在敵」 — 지지 않는 것은 나에게, 이기는 것은 적에게 달림 / 「自保而全勝」 — 자기를 보전하면서 완전한 승리',
+     '준비된 자에게 승부는 이미 결정. 「운이 좋아 이긴 것」은 진짜 승리가 아니다. 평소 축적이 모든 것.'),
+    ('兵勢 병세', '병세', '제5편 — 기정(奇正)과 세(勢)',
+     '凡 戰 者  以 正 合  以 奇 勝',
+     '대저 전쟁이란 정공(正)으로 맞붙고, 기습(奇)으로 이긴다',
+     '기정상생(奇正相生) — 정과 기는 서로 끝없이 바뀐다 / 「激水之疾 至於漂石者 勢也」 — 격류가 돌을 띄우는 것이 곧 세 / 「善戰者 求之於勢 不責於人」 — 잘 싸우는 자는 사람을 탓하지 않고 세를 구한다',
+     '정공으로 안정, 기습으로 승부. 「에너지의 운용」이 전부 — 형세를 만든 자가 이긴다.'),
+    ('虛實 허실', '허실', '제6편 — 허와 실 · 주도권의 비밀',
+     '避 實 而 擊 虛   兵 形 象 水',
+     '실(實)을 피하고 허(虛)를 친다 / 군대의 형세는 물과 같다',
+     '「致人而不致於人」 — 남을 끌고 다니되 끌려다니지 않는다 — 주도권 / 「兵形象水」 — 물이 지형에 따르듯 적정(敵情)에 따라 변한다 / 적의 강한 곳을 피하고 약한 곳을 친다',
+     '경쟁에서 「내가 강한 곳, 적이 약한 곳」으로 승부를 옮기는 능력. 주도권을 잡고 놓지 않는 자가 이긴다.'),
+    ('軍爭 군쟁', '군쟁', '제7편 — 우직지계 · 풍림화산',
+     '其 疾 如 風  其 徐 如 林  侵 掠 如 火  不 動 如 山',
+     '빠르기는 바람, 느림은 숲, 침략은 불, 움직이지 않음은 산같이',
+     '우직지계(迂直之計) — 돌아가는 길이 빠른 길 / 풍림화산(風林火山) — 4가지 행군 자세 — 일본 다케다 신겐의 「풍림화산」 깃발의 원전 / 「以迂爲直 以患爲利」 — 우회를 직진으로, 어려움을 이점으로',
+     '직진이 항상 빠른 길이 아니다 — 돌아가는 지혜. 4가지 속도와 자세를 자유롭게 전환할 수 있는 유연성.'),
+    ('九變 구변', '구변', '제8편 — 아홉 가지 변통 · 장수의 다섯 위험',
+     '將 有 五 危 — 必 死 · 必 生 · 忿 速 · 廉 潔 · 愛 民',
+     '장수의 다섯 위험 — 죽기만 하려는 것·살기만 하려는 것·성내고 급한 것·청렴함에 매이는 것·백성을 사랑하기에 매이는 것',
+     '구변(九變) — 9가지 변통의 원리 / 장수의 다섯 위험 — 극단의 덕도 결정적 약점 / 「君命有所不受」 — 임금의 명도 거역할 수 있다',
+     '한 덕목에 고착되면 그것이 곧 약점. 청렴·애민·용감조차 극단이면 위험. 상황에 따른 변통이 곧 능력.'),
+    ('行軍 행군', '행군', '제9편 — 행군과 진영 · 적정 관찰',
+     '辭 卑 而 益 備 者  進 也   辭 强 而 進 驅 者  退 也',
+     '말이 겸손하면서 준비가 많으면 진격할 것이고, 말이 강하면서 전진하면 물러나려는 것이다',
+     '32가지 적정 관찰법 — 적의 말·행동·연기·새의 움직임 등으로 의도 파악 / 「兵非益多」 — 군대가 많은 것이 능사가 아니다 / 「令之以文 齊之以武」 — 文으로 명령하고 武로 가지런히 한다',
+     '관찰의 힘 — 표면이 아닌 패턴을 읽는 안목. 협상장의 미세한 신호 읽기, 데이터 행간 읽기의 원형.'),
+    ('地形 지형', '지형', '제10편 — 여섯 가지 지형과 장수의 리더십',
+     '視 卒 如 嬰 兒  故 可 與 之 赴 深 谿   視 卒 如 愛 子  故 可 與 之 俱 死',
+     '병사를 갓난아기처럼 보면 깊은 골짜기에도 같이 갈 수 있고, 사랑하는 자식처럼 보면 함께 죽을 수 있다',
+     '여섯 가지 지형 — 통(通)·괘(掛)·지(支)·애(隘)·험(險)·원(遠) / 「知彼知己 知天知地 勝乃可全」 — 적·나·하늘·땅을 다 알아야 완전한 승리 / 장수의 인격 — 병사를 자기 몸으로 본다',
+     '환경(地)에 대한 분석 + 부하에 대한 사랑 — 리더십의 양 축. 「내 사람」으로 만드는 능력.'),
+    ('九地 구지', '구지', '제11편 — 아홉 가지 전장 상황 · 사지즉전',
+     '投 之 亡 地 然 後 存  陷 之 死 地 然 後 生',
+     '망할 곳에 던진 뒤에야 살아나고, 죽을 곳에 빠뜨린 뒤에야 살아난다',
+     '구지(九地) — 산지·경지·쟁지·교지·구지·중지·비지·위지·사지 / 「사지즉전(死地則戰)」 — 죽을 곳에서는 결사적으로 싸운다 / 배수진의 사상적 원형',
+     '편안한 곳에서 안주하면 무너지고, 절박한 곳에서 결사적이면 살아난다 — 위기의 역설.'),
+    ('火攻 화공', '화공', '제12편 — 화공의 다섯 유형 · 전쟁의 신중함',
+     '亡 國 不 可 以 復 存  死 者 不 可 以 復 生   故 明 主 慎 之  良 將 警 之',
+     '망한 나라는 되살릴 수 없고, 죽은 자는 다시 살릴 수 없다 / 그러므로 명군은 신중하고 양장은 경계한다',
+     '화공오법(火攻五法) — 인(人)·적(積)·치(輜)·고(庫)·대(隊)의 다섯 유형 / 그러나 마지막 메시지는 「전쟁의 비가역성」 / 「非利不動 非得不用 非危不戰」 — 이익이 없으면 움직이지 말라',
+     '극단적 수단도 알아두되, 절대 가볍게 쓰지 말라. 전쟁(경쟁)은 되돌릴 수 없는 결과를 낳는다는 경고.'),
+    ('用間 용간', '용간', '제13편 — 정보전 · 다섯 종류의 간첩',
+     '故 明 君 賢 將  所 以 動 而 勝 人  成 功 出 於 衆 者  先 知 也',
+     '명군과 어진 장수가 움직여 이기고 무리에 뛰어난 공을 세우는 까닭은 「먼저 아는 것(先知)」 때문이다',
+     '오간(五間) — 향간(鄕間)·내간(內間)·반간(反間)·사간(死間)·생간(生間) / 「선지(先知)」 — 먼저 아는 자가 이긴다 / 정보의 가치 — 천금을 아끼지 말라',
+     '정보는 가장 적은 비용으로 가장 큰 효과를 낳는 무기. 현대의 인텔리전스·시장 정보·HR이 모두 「용간편」의 후예.'),
+]
+
+for i, p in enumerate(CHAPTERS, 1):
+    make_chapter_slide(i, len(CHAPTERS), *p)
+
+
+# ============== Ⅵ. 핵심 사상 6기둥 ==============
+SEC6 = 'Ⅵ. 핵심 사상 6기둥'
+
+def make_concept_slide(num, total, han, kor, source, principle, today):
+    @S(SEC6)
+    def _slide(slide, n, t):
+        set_white_background(slide)
+        add_page_header(slide, f'{SEC6} ({num}/{total})', n, t)
+        add_textbox(slide, Inches(0.5), Inches(0.85), Inches(12.8), Inches(0.6),
+                    f'{han}  ({kor})',
+                    font_size=30, bold=True, color=INK, font_name='Batang')
+        add_textbox(slide, Inches(0.5), Inches(1.45), Inches(12.8), Inches(0.4),
+                    source, font_size=14, color=SUB)
+        add_filled_rect(slide, Inches(0.7), Inches(2.0), Inches(12.0), Inches(1.7), PALE)
+        add_paragraphs(slide, Inches(1.0), Inches(2.1), Inches(11.5), Inches(1.6),
+                       [(principle, {'font_size': 14, 'color': INK})], line_spacing=1.45)
+        add_textbox(slide, Inches(0.7), Inches(3.9), Inches(12.0), Inches(0.4),
+                    '◆ 오늘에의 함의', font_size=14, bold=True, color=ACCENT)
+        add_paragraphs(slide, Inches(0.7), Inches(4.3), Inches(12.0), Inches(3.0),
+                       [(today, {'font_size': 15, 'color': INK})], line_spacing=1.5)
+
+
+CONCEPTS = [
+    ('不 戰 勝', '부전승', '제3편 모공 — 손자병법의 정점',
+     '· 「不戰而屈人之兵 善之善者也」 — 싸우지 않고 굴복시키는 것이 최선\n· 우선순위 — 벌모(伐謀) → 벌교(伐交) → 벌병(伐兵) → 벌성(攻城)\n· 「百戰百勝 非善之善者也」 — 백전백승도 최선이 아니다',
+     '경쟁 이전에 전략으로, 충돌 이전에 협상으로 이긴다.\n현대 협상학·블루오션 전략·연합 외교의 동양적 원천.\n「싸우지 않고 이기는 자가 가장 강한 자」.'),
+    ('知 彼 知 己', '지피지기', '제3편 모공 — 가장 자주 인용되는 명제',
+     '· 「知彼知己 百戰不殆」 — 적을 알고 나를 알면 백 번 싸워도 위태롭지 않다\n· 「不知彼而知己 一勝一負」 — 적을 모르고 나만 알면 반은 이기고 반은 진다\n· 「不知彼不知己 每戰必敗」 — 둘 다 모르면 매번 진다',
+     '자기 인식(知己)이 적 분석(知彼)에 선행한다 — 「나를 모르면 적도 모른다」.\n현대 SWOT 분석·자기 진단·데이터 분석의 2,500년 선행 원리.'),
+    ('五 事 七 計', '오사칠계', '제1편 시계 — 전쟁 분석의 다섯 축',
+     '오사(五事) — 道(도)·天(천)·地(지)·將(장)·法(법)\n  도(道) — 명분 · 천(天) — 시기 · 지(地) — 환경 · 장(將) — 리더 · 법(法) — 시스템\n칠계(七計) — 7가지 구체 비교 항목',
+     '5가지 차원의 종합 분석 — 「대의 + 타이밍 + 환경 + 리더 + 시스템」.\n현대 경영의 PEST/5 forces 분석과 직접 통한다.\n특히 「도(道)」가 첫 번째 — 명분 없는 전쟁은 시작부터 진다.'),
+    ('奇 正 / 虛 實', '기정·허실', '제5편 병세 · 제6편 허실',
+     '「以正合 以奇勝」 — 정공으로 맞붙고, 기습으로 이긴다\n기정상생(奇正相生) — 정과 기는 끝없이 바뀐다\n「避實而擊虛」 — 실을 피하고 허를 친다\n「兵形象水」 — 물처럼 형태를 바꾼다',
+     '정공(기본 역량)이 있어야 기습(혁신)이 통한다.\n경쟁에서 「내가 강한 곳, 상대가 약한 곳」으로 옮기는 능력.\n블루오션이 곧 「허(虛)」, 레드오션이 곧 「실(實)」.'),
+    ('勢', '세', '제5편 병세 — 활시위의 에너지',
+     '「激水之疾 至於漂石者 勢也」 — 격류가 돌을 띄우는 것이 세\n「善戰者 求之於勢 不責於人」 — 잘 싸우는 자는 사람을 탓하지 않고 세를 구한다\n「勢如張弩 節如發機」 — 활시위처럼 모으고 방아쇠처럼 풀어낸다',
+     '개인의 노력보다 「형세의 운용」이 우선.\n트렌드·조류·모멘텀을 만드는 자가 이긴다.\n현대 마케팅의 momentum, 정치의 기세, 스타트업의 PMF — 모두 「세」의 변주.'),
+    ('詭 道', '궤도', '제1편 시계 — 전쟁의 본질',
+     '「兵者 詭道也」 — 전쟁은 본질적으로 속임수\n「能而示之不能 用而示之不用」 — 능력을 감추고 의도를 가린다\n「近而示之遠 遠而示之近」 — 가까이서 멀리 보이게, 멀리서 가까이 보이게',
+     '경쟁에서 「투명성」은 미덕이 아니다 — 정보 비대칭이 곧 무기.\n포커·협상·시장 전략 — 「내 패를 보여주지 않는 것」이 기본.\n현대 정보전·심리전의 원형.'),
+]
+
+for i, c in enumerate(CONCEPTS, 1):
+    make_concept_slide(i, len(CONCEPTS), *c)
+
+
+# ============== Ⅶ. 명구 16선 ==============
+SEC7 = 'Ⅶ. 명구 16선'
+
+def make_quote_slide(num, total, source, han, kor, comment):
+    @S(SEC7)
+    def _slide(slide, n, t):
+        set_white_background(slide)
+        add_page_header(slide, f'{SEC7} ({num}/{total})', n, t)
+        add_textbox(slide, Inches(0.5), Inches(0.9), Inches(12.8), Inches(0.45),
+                    source, font_size=15, color=SUB)
+        add_filled_rect(slide, Inches(0.7), Inches(1.6), Inches(12.0), Inches(2.6), PALE)
+        add_textbox(slide, Inches(0.7), Inches(1.6), Inches(12.0), Inches(1.8),
+                    han, font_size=28, bold=True, color=ACCENT,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, Inches(0.7), Inches(3.4), Inches(12.0), Inches(0.7),
+                    kor, font_size=16, color=INK,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_rule(slide, Inches(0.7), Inches(4.5), Inches(12.0))
+        add_paragraphs(slide, Inches(0.7), Inches(4.8), Inches(12.0), Inches(2.4),
+                       [(comment, {'font_size': 16, 'color': INK})],
+                       line_spacing=1.5)
+
+
+QUOTES = [
+    ('제1편 시계', '兵 者  國 之 大 事  死 生 之 地  存 亡 之 道  不 可 不 察 也',
+     '전쟁은 나라의 중대사 · 죽고 사는 터전, 존속하고 망하는 길이니, 살피지 않을 수 없다',
+     '손자병법의 첫 문장. 신중함이 모든 전략의 출발이라는 선언. 전쟁(경쟁)은 가벼이 시작할 일이 아니다.'),
+    ('제1편 시계', '兵 者  詭 道 也',
+     '전쟁은 본질적으로 속임수이다',
+     '정직함이 미덕이 아닌 영역. 정보의 비대칭이 곧 우위 — 포커·협상·시장의 기본 원리.'),
+    ('제2편 작전', '兵 聞 拙 速  未 睹 巧 之 久 也',
+     '서툴더라도 빠른 것은 들었어도, 교묘하면서 오래 끄는 것은 본 적이 없다',
+     '졸속(拙速)의 원리. 완벽 강박을 버리고 빠른 실행. 「good enough, but fast」의 가장 짧은 원전.'),
+    ('제3편 모공', '不 戰 而 屈 人 之 兵  善 之 善 者 也',
+     '싸우지 않고 적의 군대를 굴복시키는 것이 최선 중의 최선',
+     '손자병법 전체의 정점. 「최고의 승리는 전쟁 자체가 없는 것」 — 협상·외교·연합의 원천 명제.'),
+    ('제3편 모공', '知 彼 知 己  百 戰 不 殆',
+     '적을 알고 나를 알면 백 번 싸워도 위태롭지 않다',
+     '손자병법에서 가장 자주 인용되는 한 줄. 「위태롭지 않다」는 표현이 핵심 — 백전백승이 아니라 「불태(不殆)」.'),
+    ('제3편 모공', '上 兵 伐 謀  其 次 伐 交  其 次 伐 兵  其 下 攻 城',
+     '최상은 적의 계책을 깨고, 그 다음은 외교를 깨며, 그 다음이 군대 · 가장 하책이 성을 친다',
+     '경쟁의 우선순위. 직접 충돌은 마지막. 머리 → 관계 → 무력 → 정면 충돌 — 모든 영역에 적용되는 위계.'),
+    ('제4편 군형', '勝 兵 先 勝 而 後 求 戰',
+     '이기는 군대는 먼저 이기고 나서 싸운다',
+     '준비된 자에게 승부는 이미 결정 — 「선승이후구전」. 「운으로 이긴 승리」는 진짜 승리가 아니다.'),
+    ('제5편 병세', '以 正 合  以 奇 勝',
+     '정공으로 맞붙고, 기습으로 이긴다',
+     '기정(奇正)의 원리. 정공(기본 역량)이 있어야 기습(혁신)이 통한다 — 둘은 끊임없이 바뀐다.'),
+    ('제5편 병세', '激 水 之 疾  至 於 漂 石 者  勢 也',
+     '격류가 돌을 띄우는 것이 곧 세(勢)이다',
+     '개인의 힘이 아니라 「세」의 운용. 격류는 본래 무거운 돌도 띄운다 — 형세를 만드는 자가 이긴다.'),
+    ('제6편 허실', '兵 形 象 水',
+     '군대의 형세는 물과 같다',
+     '물이 지형에 따라 흐르듯, 전략은 적정(敵情)에 따라 변한다. 손자병법의 가장 시적인 비유.'),
+    ('제6편 허실', '致 人 而 不 致 於 人',
+     '남을 끌고 다니되, 끌려다니지 않는다',
+     '주도권의 정의. 모든 경쟁의 본질은 「누가 누구를 끌고 다니는가」 — 게임의 룰을 정하는 자가 이긴다.'),
+    ('제7편 군쟁', '其 疾 如 風  其 徐 如 林  侵 掠 如 火  不 動 如 山',
+     '빠를 때는 바람처럼, 느릴 때는 숲처럼, 칠 때는 불처럼, 멈출 때는 산처럼',
+     '풍림화산(風林火山). 일본 다케다 신겐의 깃발 문장. 4가지 속도·자세를 자유로이 전환하는 유연성의 표상.'),
+    ('제7편 군쟁', '以 迂 爲 直  以 患 爲 利',
+     '돌아가는 것을 직진으로 삼고, 어려움을 이점으로 삼는다',
+     '우직지계(迂直之計). 직진이 항상 빠른 길이 아니다 — 돌아가는 지혜. 어려움 속에서 기회를 보는 안목.'),
+    ('제8편 구변', '君 命 有 所 不 受',
+     '임금의 명령도 받지 않을 수 있다',
+     '장수의 전권 위임. 손무가 후궁 일화에서 실제 적용한 원칙. 현장의 판단이 본부의 명령보다 우선할 때가 있다.'),
+    ('제11편 구지', '投 之 亡 地 然 後 存  陷 之 死 地 然 後 生',
+     '망할 곳에 던진 뒤에야 살아나고, 죽을 곳에 빠뜨린 뒤에야 살아난다',
+     '사지즉전(死地則戰). 배수진의 사상적 원형. 절박함이 곧 동력 — 위기의 역설.'),
+    ('제13편 용간', '故 明 君 賢 將  所 以 動 而 勝 人  成 功 出 於 衆 者  先 知 也',
+     '명군과 어진 장수가 움직여 이기는 까닭은, 「먼저 아는 것(先知)」 때문이다',
+     '정보의 가치. 가장 적은 비용으로 가장 큰 효과 — 현대 인텔리전스·시장 정보·HR의 2,500년 선행 명제.'),
+]
+
+for i, q in enumerate(QUOTES, 1):
+    make_quote_slide(i, len(QUOTES), *q)
+
+
+# ============== Ⅷ. 동서양 후대 영향 ==============
+SEC8 = 'Ⅷ. 동서양 후대 영향'
+
+@S(SEC8)
+def viii_east(slide, n, t):
     set_white_background(slide)
-    add_filled_rect(slide, Inches(0), Inches(0), Inches(13.333), Inches(0.4), RULE)
-    add_textbox(slide, Inches(0.5), Inches(1.8), Inches(12.3), Inches(1.5),
+    add_page_header(slide, SEC8, n, t)
+    add_title(slide, '동아시아의 손자병법',
+              '중국·한국·일본 — 2,500년의 영향사')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 중국 — 조조·제갈량·이정·악비 등 역대 명장의 필독서',
+         {'font_size': 17, 'space_before': 4}),
+        ('     · 조조 『위무주손자』 — 현존 가장 권위 있는 주석',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('     · 송 무경칠서의 첫머리 — 무과 시험 필수 과목',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 한국 — 충무공 이순신의 애독서 · 조선 무과의 강경 과목',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     · 『난중일기』 곳곳에 「知彼知己」·「先勝而後求戰」의 정신',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 일본 — 다케다 신겐의 「풍림화산(風林火山)」 깃발 (제7편 군쟁 인용)',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     · 도쿠가와 이에야스 평생 옆에 두고 읽음',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('     · 메이지 이후 — 일본 육사·해사의 정식 교재',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 베트남 — 호치민이 인용한 「以迂爲直」의 게릴라 전략',
+         {'font_size': 17, 'space_before': 10}),
+    ])
+
+
+@S(SEC8)
+def viii_west(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC8, n, t)
+    add_title(slide, '서양으로 건너간 손자병법',
+              '1772년 아미오의 프랑스어 번역 → 나폴레옹 → 슈워츠코프')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 1772 — 예수회 선교사 아미오(J.J.M. Amiot)의 프랑스어 첫 번역',
+         {'font_size': 17, 'space_before': 4}),
+        ('     · 「Art Militaire des Chinois」 — 중국인의 전쟁술',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 나폴레옹 — 손자병법을 깊이 연구했다는 기록 · 일부 전기에 언급',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 20세기 — 영어 번역(Lionel Giles, 1910)으로 본격 확산',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 1991 걸프전 — 슈워츠코프(Norman Schwarzkopf) 사령관',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     · 「내 책상엔 늘 손자병법이 있었다」 — 우회 기동(left hook)이 「以迂爲直」 응용',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 마오쩌둥의 게릴라 전술 · 미 해병대·서점가 베스트셀러',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 영문판이 동양 고전 중 가장 많이 팔린 책 — 서양에서 가장 사랑받는 동양 병서',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
+    ])
+
+
+@S(SEC8)
+def viii_modern(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC8, n, t)
+    add_title(slide, '현대 응용 — 군사를 넘어 경영·외교·일상으로')
+    rows = [
+        ('경영 전략',  '마이클 포터의 경쟁 전략 · 블루오션 · 차별화 — 「避實擊虛」의 직역'),
+        ('협상학',     '하버드 협상론 · BATNA · 정보 비대칭 — 「兵者詭道」의 응용'),
+        ('마케팅',    '포지셔닝 · 모멘텀 · 차별화 — 「勢」와 「奇正」의 활용'),
+        ('스포츠',     '농구·축구의 전술 다양화 — 풍림화산의 4가지 페이스'),
+        ('정보·HR',   '인텔리전스 · 인재 분석 · 인사 평가 — 「先知」와 「五間」'),
+        ('자기 관리',  '「知己」가 곧 자기 인식 · 「先勝而後求戰」이 곧 준비된 삶'),
+        ('IT·스타트업', '아마존 베조스 등 — 「拙速」 = 「Move fast, ship fast」'),
+        ('일본 기업', '소니·도요타의 「변통」 — 「九變」과 「兵形象水」의 응용'),
+    ]
+    for i, (cat, desc) in enumerate(rows):
+        y = Inches(2.3 + i * 0.55)
+        add_filled_rect(slide, Inches(0.7), y, Inches(2.8), Inches(0.45), ACCENT)
+        add_textbox(slide, Inches(0.7), y, Inches(2.8), Inches(0.45),
+                    cat, font_size=14, bold=True, color=WHITE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(3.7), y + Inches(0.02), Inches(9.2), Inches(0.42),
+                    desc, font_size=13, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+
+
+# ============== Ⅸ. 짝 책들 ==============
+SEC9 = 'Ⅸ. 짝 책들 — 비교 지도'
+
+@S(SEC9)
+def ix_compare(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC9, n, t)
+    add_title(slide, '동양 병서의 큰 지도 — 손자를 중심으로',
+              '오자병법·삼십육계·육도삼략과의 관계')
+    rows = [
+        ('孫子兵法 손자병법',  '손무 · 13편 6,000자',  '전쟁의 본질 · 부전승의 철학', '본 PPT의 주제'),
+        ('吳子兵法 오자병법',  '오기 · 6편',           '군사 행정 · 장수와 사기 · 실전 매뉴얼', '손자의 짝'),
+        ('三十六計 삼십육계', '저자·시대 불명 · 36계', '구체적 계책 매뉴얼 · 모공의 「벌모」 사례집', '손자의 응용'),
+        ('六韜 三略 육도삼략', '강태공·황석공',         '제왕학의 병서 · 통치와 결합', '손자의 보완'),
+        ('司馬法 사마법',     '전양저 · 5편',          '군의 윤리(軍禮)', '무경칠서 동기'),
+        ('尉繚子 울료자',     '울료 · 24편',          '법치 군사론 · 엄정한 군기', '무경칠서 동기'),
+        ('李衛公問對 이위공문대', '이정 · 3권',        '당대 전략 문답 · 정·기의 변용', '손자의 해설'),
+    ]
+    for i, row in enumerate(rows):
+        name, info, role, rel = row
+        y = Inches(2.4 + i * 0.6)
+        is_sunzi = i == 0
+        bg = ACCENT if is_sunzi else (PALE if i % 2 == 0 else WHITE)
+        color = WHITE if is_sunzi else INK
+        add_filled_rect(slide, Inches(0.7), y, Inches(3.0), Inches(0.55), bg)
+        add_textbox(slide, Inches(0.7), y, Inches(3.0), Inches(0.55),
+                    name, font_size=14, bold=True, color=color,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, Inches(3.9), y, Inches(2.4), Inches(0.55),
+                    info, font_size=12, color=SUB, bold=is_sunzi,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(6.5), y, Inches(4.0), Inches(0.55),
+                    role, font_size=12, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(10.6), y, Inches(2.3), Inches(0.55),
+                    rel, font_size=12, color=ACCENT, bold=True,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+
+
+@S(SEC9)
+def ix_pair(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC9, n, t)
+    add_title(slide, '손자와 짝 — 같이 읽으면 좋은 책',
+              '「장수의 눈」과 「왕의 눈」을 함께 가지는 법')
+    cols = [
+        ('孫 子', '장수의 눈',
+         '6,000자의 압축\n전장의 정밀한 승부 기술\n\n전술과 운용 중심\n「부전승」의 철학\n\n좁고 깊은 책',
+         ACCENT),
+        ('六 韜 三 略', '왕의 눈',
+         '수만 자의 풍부\n천하 창건의 정치\n\n통치와 인재 중심\n「천하공유」의 철학\n\n넓고 풍부한 책',
+         INK),
+    ]
+    for i, (han, label, body, color) in enumerate(cols):
+        x = Inches(0.7 + i * 6.3)
+        add_filled_rect(slide, x, Inches(2.3), Inches(5.9), Inches(1.0), color)
+        add_textbox(slide, x, Inches(2.3), Inches(5.9), Inches(0.6),
+                    han, font_size=30, bold=True, color=WHITE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, x, Inches(2.95), Inches(5.9), Inches(0.4),
+                    label, font_size=15, color=RULE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_paragraphs(slide, x + Inches(0.5), Inches(3.6), Inches(4.9), Inches(3.5),
+                       [(body, {'font_size': 15, 'color': INK})], line_spacing=1.5)
+    add_textbox(slide, Inches(0.7), Inches(7.0), Inches(12.0), Inches(0.4),
+                '한신(韓信)이 손자병법의 장수, 장량(張良)이 삼략의 책사 — 한(漢) 건국의 두 축',
+                font_size=13, color=SUB, align=PP_ALIGN.CENTER)
+
+
+# ============== Ⅹ. 오늘 우리에게 + 마무리 ==============
+SEC10 = 'Ⅹ. 오늘 우리에게'
+
+@S(SEC10)
+def x_today(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC10, n, t)
+    add_title(slide, '손자병법이 오늘 우리에게 일러주는 10가지')
+    items = [
+        '1. 신중하라 — 큰 결정 앞에서는 「오사칠계」로 다섯 차원을 분석',
+        '2. 싸우지 않고 이기는 길을 먼저 찾아라 — 부전승의 우선순위',
+        '3. 적보다 자기를 먼저 알라 — 「知己」가 「知彼」에 선행',
+        '4. 빠른 부족이 늦은 완벽보다 낫다 — 졸속의 원리',
+        '5. 준비된 자에게 승부는 이미 결정 — 「先勝而後求戰」',
+        '6. 정공과 기습을 자유로이 전환하라 — 기정의 운용',
+        '7. 강한 곳을 피하고 약한 곳을 쳐라 — 「避實擊虛」',
+        '8. 직진이 항상 빠른 길이 아니다 — 우직지계',
+        '9. 한 덕목에 고착되면 그것이 약점 — 장수의 다섯 위험',
+        '10. 정보가 가장 적은 비용으로 가장 큰 효과 — 「先知」',
+    ]
+    for i, txt in enumerate(items):
+        y = Inches(2.3 + i * 0.45)
+        add_textbox(slide, Inches(0.7), y, Inches(12.0), Inches(0.4),
+                    txt, font_size=15, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+
+
+@S(SEC10)
+def x_summary(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC10, n, t)
+    add_title(slide, '손자병법, 한 폭으로')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.8), [
+        ('● 손무가 BC 6세기 말 오나라에서 합려에게 바친 13편 6,000자.',
+         {'font_size': 18, 'space_before': 6, 'bold': True, 'color': ACCENT}),
+        ('● 동양 최고(最古)·최고(最高)의 병서, 무경칠서의 첫머리.',
+         {'font_size': 18, 'space_before': 8}),
+        ('● 6대 핵심 사상 — 부전승·지피지기·오사칠계·기정허실·세·궤도.',
+         {'font_size': 18, 'space_before': 8}),
+        ('● 풍림화산·우직지계·졸속·선승이후구전·사지즉전·선지 — 일상에 살아 있는 표현.',
+         {'font_size': 18, 'space_before': 8}),
+        ('● 조조의 주석 · 이순신의 애독서 · 다케다 신겐의 깃발 · 슈워츠코프의 책상.',
+         {'font_size': 18, 'space_before': 8}),
+        ('● 그리고 무엇보다, 「병법서이면서 싸우지 말라는」 위대한 역설의 책.',
+         {'font_size': 19, 'space_before': 14, 'bold': True, 'color': ACCENT}),
+    ])
+
+
+@S(SEC10)
+def x_final(slide, n, t):
+    set_white_background(slide)
+    add_filled_rect(slide, Inches(0), Inches(0), Inches(13.333), Inches(0.4), INK)
+    add_filled_rect(slide, Inches(0), Inches(7.1), Inches(13.333), Inches(0.4), INK)
+    add_textbox(slide, Inches(0.5), Inches(1.5), Inches(12.3), Inches(1.0),
                 '不 戰 而 屈 人 之 兵',
-                font_size=54, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(3.2), Inches(12.3), Inches(1.5),
+                font_size=66, bold=True, color=INK,
+                align=PP_ALIGN.CENTER, font_name='Batang')
+    add_textbox(slide, Inches(0.5), Inches(2.7), Inches(12.3), Inches(0.9),
                 '善 之 善 者 也',
-                font_size=44, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(4.4), Inches(12.3), Inches(0.5),
-                '부전이굴인지병 선지선자야', font_size=18, color=SUB,
-                align=PP_ALIGN.CENTER)
-    add_rule(slide, Inches(5.5), Inches(5.1), Inches(2.3), color=RULE, weight=1.5)
-    add_textbox(slide, Inches(0.5), Inches(5.4), Inches(12.3), Inches(0.6),
-                '"싸우지 않고 적을 굴복시키는 것이 최선의 최선이다"',
-                font_size=22, bold=True, color=INK, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.1), Inches(12.3), Inches(0.4),
-                '— 모공편 제3',
-                font_size=14, color=SUB, align=PP_ALIGN.CENTER)
-    add_textbox(slide, Inches(0.5), Inches(6.8), Inches(12.3), Inches(0.5),
-                '감사합니다', font_size=26, bold=True, color=INK,
-                align=PP_ALIGN.CENTER)
-    add_filled_rect(slide, Inches(0), Inches(7.1), Inches(13.333), Inches(0.4), RULE)
+                font_size=60, bold=True, color=ACCENT,
+                align=PP_ALIGN.CENTER, font_name='Batang')
+    add_rule(slide, Inches(4.0), Inches(4.3), Inches(5.3))
+    add_textbox(slide, Inches(0.5), Inches(4.5), Inches(12.3), Inches(0.6),
+                '싸 우 지  않 고  적 의  군 대 를  굴 복 시 키 는  것 이',
+                font_size=20, color=SUB, align=PP_ALIGN.CENTER)
+    add_textbox(slide, Inches(0.5), Inches(5.1), Inches(12.3), Inches(0.6),
+                '최 선  중 의  최 선 이 다',
+                font_size=20, color=SUB, align=PP_ALIGN.CENTER)
+    add_textbox(slide, Inches(0.5), Inches(6.0), Inches(12.3), Inches(0.5),
+                '— 손자병법 제3편 모공(謀攻)',
+                font_size=15, color=SUB, align=PP_ALIGN.CENTER)
+    add_textbox(slide, Inches(0.5), Inches(6.5), Inches(12.3), Inches(0.4),
+                '孫  子  兵  法',
+                font_size=20, color=INK, align=PP_ALIGN.CENTER, font_name='Batang')
 
 
-# ---------- 빌드 ----------
+# ============== 빌드 ==============
 total_pages = len(SLIDES)
+print(f'Total {total_pages} slides — building ...')
 for i, (renderer, section) in enumerate(SLIDES, 1):
     slide = prs.slides.add_slide(blank)
     renderer(slide, i, total_pages)
-
 out_path = r'C:\Users\박호군\ClaudeProjects\Oriental-Classics2\발표자료\손자병법_발표자료.pptx'
 prs.save(out_path)
 print(f'Saved: {out_path}  ({total_pages} slides)')
