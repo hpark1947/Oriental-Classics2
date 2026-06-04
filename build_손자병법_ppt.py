@@ -156,16 +156,17 @@ def slide_toc(slide, n, t):
     items_left = [
         ('Ⅰ.', '개요 — 6,000자의 역설'),
         ('Ⅱ.', '손무와 시대 — 춘추 말의 오나라'),
-        ('Ⅲ.', '무경칠서의 첫머리 · 은작산 죽간'),
-        ('Ⅳ.', '13편의 구조'),
+        ('Ⅲ.', '위상과 판본 · 은작산 죽간'),
+        ('Ⅳ.', '13편의 구조 · 풍림화산'),
         ('Ⅴ.', '13편 각 편 깊이 읽기'),
+        ('Ⅵ.', '핵심 사상 6기둥'),
     ]
     items_right = [
-        ('Ⅵ.', '핵심 사상 6기둥'),
         ('Ⅶ.', '명구 16선'),
-        ('Ⅷ.', '동서양 후대 영향'),
-        ('Ⅸ.', '짝 책들 — 오자·삼십육계·육도삼략'),
-        ('Ⅹ.', '오늘 우리에게 · 마무리'),
+        ('Ⅷ.', '짝 책들 — 손빈·오자·삼십육계'),
+        ('Ⅸ.', '역사 적용 — 적벽·이순신·마오'),
+        ('Ⅹ.', '동서양 후대 영향 · 현대 경영'),
+        ('Ⅺ.', '오늘 우리에게 · 마무리'),
     ]
     for i, (num, txt) in enumerate(items_left):
         y = Inches(2.6 + i * 0.65)
@@ -512,6 +513,45 @@ def iv_table(slide, n, t):
                     desc, font_size=12, color=INK, anchor=MSO_ANCHOR.MIDDLE)
 
 
+@S(SEC4)
+def iv_fenglinhuoshan(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC4, n, t)
+    add_title(slide, '풍림화산(風林火山) — 군쟁편의 4가지 행군 자세',
+              '일본 다케다 신겐 깃발의 원전 · 손자병법 가장 시적인 문장')
+    cols = [
+        ('風', '풍', '其 疾 如 風',  '빠를 때는 바람처럼', '신속·기습'),
+        ('林', '림', '其 徐 如 林',  '느릴 때는 숲처럼',   '정숙·은밀'),
+        ('火', '화', '侵 掠 如 火',  '칠 때는 불처럼',     '맹렬·과감'),
+        ('山', '산', '不 動 如 山',  '멈출 때는 산처럼',   '부동·견고'),
+    ]
+    for i, (han, kor, original, modern, label) in enumerate(cols):
+        x = Inches(0.7 + i * 3.1)
+        add_filled_rect(slide, x, Inches(2.3), Inches(2.9), Inches(2.2), ACCENT)
+        add_textbox(slide, x, Inches(2.4), Inches(2.9), Inches(1.4),
+                    han, font_size=120, bold=True, color=WHITE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, x, Inches(3.95), Inches(2.9), Inches(0.4),
+                    kor, font_size=15, color=RULE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_filled_rect(slide, x, Inches(4.6), Inches(2.9), Inches(0.6), PALE)
+        add_textbox(slide, x, Inches(4.6), Inches(2.9), Inches(0.6),
+                    original, font_size=15, bold=True, color=ACCENT,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, x, Inches(5.3), Inches(2.9), Inches(0.4),
+                    modern, font_size=13, color=INK,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, x, Inches(5.8), Inches(2.9), Inches(0.4),
+                    label, font_size=13, color=ACCENT, bold=True,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    add_textbox(slide, Inches(0.7), Inches(6.5), Inches(12.0), Inches(0.4),
+                '4가지 속도와 자세를 자유롭게 전환하는 유연성 — 다케다 신겐의 「風林火山」 깃발',
+                font_size=14, color=SUB, bold=True, align=PP_ALIGN.CENTER)
+    add_textbox(slide, Inches(0.7), Inches(6.9), Inches(12.0), Inches(0.4),
+                '계속 — 「難 知 如 陰  動 如 雷 霆」 (알기 어려움은 그늘 같이, 움직임은 천둥 같이)',
+                font_size=13, color=SUB, align=PP_ALIGN.CENTER)
+
+
 # ============== Ⅴ. 13편 깊이 읽기 ==============
 SEC5 = 'Ⅴ. 13편 깊이 읽기'
 
@@ -738,8 +778,235 @@ for i, q in enumerate(QUOTES, 1):
     make_quote_slide(i, len(QUOTES), *q)
 
 
-# ============== Ⅷ. 동서양 후대 영향 ==============
-SEC8 = 'Ⅷ. 동서양 후대 영향'
+# ============== Ⅷ. 짝 책들 ==============
+SEC_PAIR = 'Ⅷ. 짝 책들'
+
+@S(SEC_PAIR)
+def pair_sunbin(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_PAIR, n, t)
+    add_title(slide, '손빈병법(孫臏兵法) — 2,000년 만에 부활한 책',
+              '손무의 5대손 손빈 · 1972 은작산 죽간 출토')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 손빈(孫臏, BC 382?~316?) — 손무의 5대손 · 제(齊)나라 군사(軍師)',
+         {'font_size': 17, 'space_before': 4}),
+        ('● 방연(龐涓)의 모함으로 빈형(臏刑, 슬개골 도려내는 형벌) — 그 후 「손빈」으로 불림',
+         {'font_size': 16, 'space_before': 10, 'color': SUB}),
+        ('● 두 전설적 전투', {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('     · 계릉(桂陵) 전투 (BC 353) — 「위위구조(圍魏救趙)」의 원형',
+         {'font_size': 14, 'space_before': 4}),
+        ('     · 마릉(馬陵) 전투 (BC 341) — 방연을 죽음으로 몬 「감조계(減竈計)」',
+         {'font_size': 14, 'space_before': 4}),
+        ('● 송대 이후 실전 → 1972 산둥 은작산 한묘 죽간 출토로 부활',
+         {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('     『손자병법』과 『손빈병법』이 별개의 책임이 죽간 출토로 확정',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 손자가 「전쟁의 원리」라면 손빈은 「전국시대 실전 사례 기록」',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
+    ])
+
+
+@S(SEC_PAIR)
+def pair_wuzi(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_PAIR, n, t)
+    add_title(slide, '오자병법(吳子兵法) — 손자의 짝',
+              '오기(吳起, BC 440~381) · 6편 · 군사 행정의 매뉴얼')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 오기 — 위(衛) 출신 · 노(魯)·위(魏)·초(楚) 3국에서 활약한 명장',
+         {'font_size': 17, 'space_before': 4}),
+        ('● 위 문후(文侯)·무후(武侯)를 도와 위나라를 전국 초기 최강국으로 만듦',
+         {'font_size': 17, 'space_before': 10}),
+        ('● 6편 구성 — 도국(圖國)·요적(料敵)·치병(治兵)·논장(論將)·응변(應變)·여사(勵士)',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('● 손자와의 차이 — 손자가 「전쟁의 본질」이라면 오자는 「군사 행정」',
+         {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('     · 손자 — 압축·이론적 / 오자 — 구체적·실무적',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('     · 손자 — 부전승의 철학 / 오자 — 장수와 병사의 사기 진작',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 손자와 함께 「손오병법(孫吳兵法)」으로 묶여 동양 병법의 양대 축',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
+        ('● 오기의 최후 — 초나라에서 변법 추진 후 귀족들의 활에 죽음',
+         {'font_size': 15, 'space_before': 10, 'color': SUB}),
+    ])
+
+
+@S(SEC_PAIR)
+def pair_36(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_PAIR, n, t)
+    add_title(slide, '삼십육계(三十六計) — 손자의 응용 매뉴얼',
+              '명말청초 작자 미상 · 6계 × 6류 = 36계의 사자성어')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 「三十六計 走爲上」 — 서른여섯 계책 중 달아나는 것이 최고의 계책',
+         {'font_size': 18, 'space_before': 4, 'bold': True, 'color': ACCENT, 'font_name': 'Batang'}),
+        ('● 6류 × 6계 구조', {'font_size': 17, 'space_before': 12, 'bold': True, 'color': ACCENT}),
+        ('     · 승전계(勝戰計) — 우세할 때의 계책 (만천과해·위위구조·차도살인…)',
+         {'font_size': 13, 'space_before': 6}),
+        ('     · 적전계(敵戰計) — 대등할 때 (무중생유·암도진창·격안관화…)',
+         {'font_size': 13, 'space_before': 4}),
+        ('     · 공전계(攻戰計) — 공격 (타초경사·차시환혼·조호리산…)',
+         {'font_size': 13, 'space_before': 4}),
+        ('     · 혼전계(混戰計) — 혼란기 (부저추신·혼수모어·금선탈각…)',
+         {'font_size': 13, 'space_before': 4}),
+        ('     · 병전계(并戰計) — 합병 (투량환주·지상매괴·반객위주…)',
+         {'font_size': 13, 'space_before': 4}),
+        ('     · 패전계(敗戰計) — 패할 때 (미인계·공성계·반간계·고육계·연환계·주위상)',
+         {'font_size': 13, 'space_before': 4}),
+        ('● 손자가 「원리」라면 삼십육계는 「구체적 36개 계책 매뉴얼」 — 모공편 「벌모」의 응용',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
+    ])
+
+
+@S(SEC_PAIR)
+def pair_compare(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_PAIR, n, t)
+    add_title(slide, '동양 병서의 큰 지도 — 손자를 중심으로',
+              '오자병법·삼십육계·육도삼략과의 관계')
+    rows = [
+        ('孫子兵法 손자병법',  '손무 · 13편 6,000자',  '전쟁의 본질 · 부전승의 철학', '본 PPT의 주제'),
+        ('吳子兵法 오자병법',  '오기 · 6편',           '군사 행정 · 장수와 사기 · 실전 매뉴얼', '손자의 짝'),
+        ('三十六計 삼십육계', '저자·시대 불명 · 36계', '구체적 계책 매뉴얼 · 모공의 「벌모」 사례집', '손자의 응용'),
+        ('六韜 三略 육도삼략', '강태공·황석공',         '제왕학의 병서 · 통치와 결합', '손자의 보완'),
+        ('司馬法 사마법',     '전양저 · 5편',          '군의 윤리(軍禮)', '무경칠서 동기'),
+        ('尉繚子 울료자',     '울료 · 24편',          '법치 군사론 · 엄정한 군기', '무경칠서 동기'),
+        ('李衛公問對 이위공문대', '이정 · 3권',        '당대 전략 문답 · 정·기의 변용', '손자의 해설'),
+    ]
+    for i, row in enumerate(rows):
+        name, info, role, rel = row
+        y = Inches(2.4 + i * 0.6)
+        is_sunzi = i == 0
+        bg = ACCENT if is_sunzi else (PALE if i % 2 == 0 else WHITE)
+        color = WHITE if is_sunzi else INK
+        add_filled_rect(slide, Inches(0.7), y, Inches(3.0), Inches(0.55), bg)
+        add_textbox(slide, Inches(0.7), y, Inches(3.0), Inches(0.55),
+                    name, font_size=14, bold=True, color=color,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, Inches(3.9), y, Inches(2.4), Inches(0.55),
+                    info, font_size=12, color=SUB, bold=is_sunzi,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(6.5), y, Inches(4.0), Inches(0.55),
+                    role, font_size=12, color=INK, anchor=MSO_ANCHOR.MIDDLE)
+        add_textbox(slide, Inches(10.6), y, Inches(2.3), Inches(0.55),
+                    rel, font_size=12, color=ACCENT, bold=True,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+
+
+@S(SEC_PAIR)
+def pair_pair(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_PAIR, n, t)
+    add_title(slide, '손자와 짝 — 같이 읽으면 좋은 책',
+              '「장수의 눈」과 「왕의 눈」을 함께 가지는 법')
+    cols = [
+        ('孫 子', '장수의 눈',
+         '6,000자의 압축\n전장의 정밀한 승부 기술\n\n전술과 운용 중심\n「부전승」의 철학\n\n좁고 깊은 책',
+         ACCENT),
+        ('六 韜 三 略', '왕의 눈',
+         '수만 자의 풍부\n천하 창건의 정치\n\n통치와 인재 중심\n「천하공유」의 철학\n\n넓고 풍부한 책',
+         INK),
+    ]
+    for i, (han, label, body, color) in enumerate(cols):
+        x = Inches(0.7 + i * 6.3)
+        add_filled_rect(slide, x, Inches(2.3), Inches(5.9), Inches(1.0), color)
+        add_textbox(slide, x, Inches(2.3), Inches(5.9), Inches(0.6),
+                    han, font_size=30, bold=True, color=WHITE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
+        add_textbox(slide, x, Inches(2.95), Inches(5.9), Inches(0.4),
+                    label, font_size=15, color=RULE,
+                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_paragraphs(slide, x + Inches(0.5), Inches(3.6), Inches(4.9), Inches(3.5),
+                       [(body, {'font_size': 15, 'color': INK})], line_spacing=1.5)
+    add_textbox(slide, Inches(0.7), Inches(7.0), Inches(12.0), Inches(0.4),
+                '한신(韓信)이 손자병법의 장수, 장량(張良)이 삼략의 책사 — 한(漢) 건국의 두 축',
+                font_size=13, color=SUB, align=PP_ALIGN.CENTER)
+
+
+# ============== Ⅸ. 역사 적용 사례 ==============
+SEC_HIST = 'Ⅸ. 역사 적용 사례'
+
+@S(SEC_HIST)
+def hist_samguk(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_HIST, n, t)
+    add_title(slide, '삼국지(三國志) — 손자병법의 살아 있는 무대',
+              '조조·제갈량·주유 — 모두 손자병법의 대가')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 조조(曹操) — 현존 가장 권위 있는 손자 주석서 『위무주손자』 저술',
+         {'font_size': 17, 'space_before': 4, 'bold': True, 'color': ACCENT}),
+        ('     · 「내가 평생 사랑한 책은 손자병법뿐이다」 — 조조의 자평',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 적벽대전(208) — 손자병법 6편 허실편 「피실격허」의 정수',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     · 조조의 강군에 맞선 손권·유비 연합의 화공(火攻) — 12편 화공편 응용',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('     · 제갈량의 「초선차전(草船借箭)」 — 13편 용간편 정보전',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 제갈량(諸葛亮) — 5편 병세편 「세(勢)」의 운용가',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     · 공성계(空城計) — 삼십육계 32번째 계, 손자 「궤도(詭道)」의 극치',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 「삼국지 = 손자병법의 살아 있는 케이스북」 — 6,000자의 모든 원리가 적용됨',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
+    ])
+
+
+@S(SEC_HIST)
+def hist_yi(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_HIST, n, t)
+    add_title(slide, '충무공 이순신 — 손자병법의 한국 화신',
+              '23전 23승 · 명량·한산·노량의 모든 승부에 손자의 그림자')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 『난중일기』 곳곳에 손자의 정신이 흐른다 — 「知彼知己」·「先勝而後求戰」',
+         {'font_size': 17, 'space_before': 4, 'bold': True, 'color': ACCENT}),
+        ('● 한산도 대첩(1592) — 「유인 + 학익진」 = 5편 병세편 「以正合 以奇勝」',
+         {'font_size': 17, 'space_before': 10}),
+        ('     · 정공으로 만나고 기습으로 이긴다 — 학익진(鶴翼陣)의 완성',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 명량 해전(1597) — 「13척으로 133척을 이긴」 기적',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     · 11편 구지편 「死地則戰」 — 「必生則死 必死則生」의 정수',
+         {'font_size': 14, 'color': SUB, 'space_before': 4, 'font_name': 'Batang'}),
+        ('     · 지형(좁은 명량 해협) + 시간(조류) + 사기 = 손자 「오사」 완벽 적용',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 「閑山島月明夜上戍樓」 — 손자가 가르친 「先知」와 「致人而不致於人」의 한국적 표현',
+         {'font_size': 15, 'space_before': 12, 'color': SUB, 'bold': True, 'font_name': 'Batang'}),
+        ('● 충무공은 「손자병법을 가장 완벽하게 실전한 동양 장군」으로 평가됨',
+         {'font_size': 16, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+    ])
+
+
+@S(SEC_HIST)
+def hist_mao(slide, n, t):
+    set_white_background(slide)
+    add_page_header(slide, SEC_HIST, n, t)
+    add_title(slide, '마오쩌둥 · 호치민 — 게릴라전의 손자',
+              '약자가 강자를 이긴 20세기 두 전쟁의 사상적 토대')
+    add_paragraphs(slide, Inches(0.7), Inches(2.3), Inches(12.0), Inches(4.5), [
+        ('● 마오쩌둥(毛澤東) — 손자병법의 가장 위대한 20세기 응용가',
+         {'font_size': 18, 'space_before': 4, 'bold': True, 'color': ACCENT}),
+        ('● 16자 전략 — 「敵進我退 敵駐我擾 敵疲我打 敵退我追」',
+         {'font_size': 17, 'space_before': 10, 'font_name': 'Batang'}),
+        ('     · 적이 진격하면 물러나고, 머무르면 괴롭히고, 지치면 치고, 물러나면 쫓는다',
+         {'font_size': 13, 'color': SUB, 'space_before': 4}),
+        ('     · 6편 허실편 「致人而不致於人」 + 7편 군쟁편 「以迂爲直」의 응용',
+         {'font_size': 13, 'color': SUB, 'space_before': 4}),
+        ('● 『지구전론(持久戰論)』(1938) — 손자 2편 작전편 「졸속」의 변용',
+         {'font_size': 17, 'space_before': 12}),
+        ('● 호치민 — 인도차이나 전쟁·베트남 전쟁에서 손자병법 직접 인용',
+         {'font_size': 17, 'space_before': 10, 'bold': True, 'color': ACCENT}),
+        ('     · 「以迂爲直」 — 정글의 우회 작전 / 「죽도록 작은 비용으로 큰 효과」',
+         {'font_size': 14, 'color': SUB, 'space_before': 4}),
+        ('● 20세기 양대 게릴라전 — 「약자가 강자를 이긴」 손자의 결정적 응용 사례',
+         {'font_size': 16, 'space_before': 12, 'color': ACCENT, 'bold': True}),
+    ])
+
+
+# ============== Ⅹ. 동서양 후대 영향 ==============
+SEC8 = 'Ⅹ. 동서양 후대 영향'
 
 @S(SEC8)
 def viii_east(slide, n, t):
@@ -820,76 +1087,8 @@ def viii_modern(slide, n, t):
                     desc, font_size=13, color=INK, anchor=MSO_ANCHOR.MIDDLE)
 
 
-# ============== Ⅸ. 짝 책들 ==============
-SEC9 = 'Ⅸ. 짝 책들 — 비교 지도'
-
-@S(SEC9)
-def ix_compare(slide, n, t):
-    set_white_background(slide)
-    add_page_header(slide, SEC9, n, t)
-    add_title(slide, '동양 병서의 큰 지도 — 손자를 중심으로',
-              '오자병법·삼십육계·육도삼략과의 관계')
-    rows = [
-        ('孫子兵法 손자병법',  '손무 · 13편 6,000자',  '전쟁의 본질 · 부전승의 철학', '본 PPT의 주제'),
-        ('吳子兵法 오자병법',  '오기 · 6편',           '군사 행정 · 장수와 사기 · 실전 매뉴얼', '손자의 짝'),
-        ('三十六計 삼십육계', '저자·시대 불명 · 36계', '구체적 계책 매뉴얼 · 모공의 「벌모」 사례집', '손자의 응용'),
-        ('六韜 三略 육도삼략', '강태공·황석공',         '제왕학의 병서 · 통치와 결합', '손자의 보완'),
-        ('司馬法 사마법',     '전양저 · 5편',          '군의 윤리(軍禮)', '무경칠서 동기'),
-        ('尉繚子 울료자',     '울료 · 24편',          '법치 군사론 · 엄정한 군기', '무경칠서 동기'),
-        ('李衛公問對 이위공문대', '이정 · 3권',        '당대 전략 문답 · 정·기의 변용', '손자의 해설'),
-    ]
-    for i, row in enumerate(rows):
-        name, info, role, rel = row
-        y = Inches(2.4 + i * 0.6)
-        is_sunzi = i == 0
-        bg = ACCENT if is_sunzi else (PALE if i % 2 == 0 else WHITE)
-        color = WHITE if is_sunzi else INK
-        add_filled_rect(slide, Inches(0.7), y, Inches(3.0), Inches(0.55), bg)
-        add_textbox(slide, Inches(0.7), y, Inches(3.0), Inches(0.55),
-                    name, font_size=14, bold=True, color=color,
-                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
-        add_textbox(slide, Inches(3.9), y, Inches(2.4), Inches(0.55),
-                    info, font_size=12, color=SUB, bold=is_sunzi,
-                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        add_textbox(slide, Inches(6.5), y, Inches(4.0), Inches(0.55),
-                    role, font_size=12, color=INK, anchor=MSO_ANCHOR.MIDDLE)
-        add_textbox(slide, Inches(10.6), y, Inches(2.3), Inches(0.55),
-                    rel, font_size=12, color=ACCENT, bold=True,
-                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-
-
-@S(SEC9)
-def ix_pair(slide, n, t):
-    set_white_background(slide)
-    add_page_header(slide, SEC9, n, t)
-    add_title(slide, '손자와 짝 — 같이 읽으면 좋은 책',
-              '「장수의 눈」과 「왕의 눈」을 함께 가지는 법')
-    cols = [
-        ('孫 子', '장수의 눈',
-         '6,000자의 압축\n전장의 정밀한 승부 기술\n\n전술과 운용 중심\n「부전승」의 철학\n\n좁고 깊은 책',
-         ACCENT),
-        ('六 韜 三 略', '왕의 눈',
-         '수만 자의 풍부\n천하 창건의 정치\n\n통치와 인재 중심\n「천하공유」의 철학\n\n넓고 풍부한 책',
-         INK),
-    ]
-    for i, (han, label, body, color) in enumerate(cols):
-        x = Inches(0.7 + i * 6.3)
-        add_filled_rect(slide, x, Inches(2.3), Inches(5.9), Inches(1.0), color)
-        add_textbox(slide, x, Inches(2.3), Inches(5.9), Inches(0.6),
-                    han, font_size=30, bold=True, color=WHITE,
-                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, font_name='Batang')
-        add_textbox(slide, x, Inches(2.95), Inches(5.9), Inches(0.4),
-                    label, font_size=15, color=RULE,
-                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        add_paragraphs(slide, x + Inches(0.5), Inches(3.6), Inches(4.9), Inches(3.5),
-                       [(body, {'font_size': 15, 'color': INK})], line_spacing=1.5)
-    add_textbox(slide, Inches(0.7), Inches(7.0), Inches(12.0), Inches(0.4),
-                '한신(韓信)이 손자병법의 장수, 장량(張良)이 삼략의 책사 — 한(漢) 건국의 두 축',
-                font_size=13, color=SUB, align=PP_ALIGN.CENTER)
-
-
-# ============== Ⅹ. 오늘 우리에게 + 마무리 ==============
-SEC10 = 'Ⅹ. 오늘 우리에게'
+# ============== Ⅺ. 오늘 우리에게 + 마무리 ==============
+SEC10 = 'Ⅺ. 오늘 우리에게'
 
 @S(SEC10)
 def x_today(slide, n, t):
