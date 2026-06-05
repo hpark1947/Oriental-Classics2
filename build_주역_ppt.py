@@ -1970,6 +1970,6 @@ for i, (renderer, section) in enumerate(SLIDES, 1):
     slide = prs.slides.add_slide(blank)
     renderer(slide, i, total_pages)
 
-out_path = r'C:\Users\박호군\ClaudeProjects\Oriental-Classics2\발표자료\주역_발표자료.pptx'
+out_path = r'C:\Users\박호군\ClaudeProjects\Oriental-Classics2\발표자료\주역.pptx'
 prs.save(out_path)
 print(f'Saved: {out_path}  ({total_pages} slides)')
