@@ -112,9 +112,9 @@ def add_section_panel(slide, top, height, title, body_lines,
                       title_size=15, body_size=13, left=0.50, width=12.30):
     """소제목 + 본문 단락이 들어가는 박스."""
     add_rect(slide, left, top, width, height, fill_color=bg)
-    add_textbox(slide, left + 0.20, top + 0.10, width - 0.40, 0.45,
+    add_textbox(slide, left + 0.20, top + 0.08, width - 0.40, 0.42,
                 title, font_size=title_size, bold=True, color=title_color)
-    add_textbox(slide, left + 0.20, top + 0.60, width - 0.40, height - 0.70,
+    add_textbox(slide, left + 0.20, top + 0.52, width - 0.40, height - 0.58,
                 '\n'.join(body_lines), font_size=body_size, color=body_color)
 
 # ============================================================
@@ -133,10 +133,10 @@ def build_cover(prs):
     add_textbox(slide, 0.50, 1.40, 12.30, 0.60,
                 '시대 이름을 만든 책 · 종횡가의 정수 · 12국 33편의 흥망',
                 font_size=18, color=SLATE, align=PP_ALIGN.CENTER)
-    # 큰 한자 제목
-    add_textbox(slide, 0.50, 2.30, 12.30, 1.60,
+    # 큰 한자 제목 (한 줄, 박스 충분히 — 88pt → 1.95)
+    add_textbox(slide, 0.50, 2.15, 12.30, 2.00,
                 '戰 國 策', font_name=HAN, font_size=88, bold=True,
-                color=NAVY, align=PP_ALIGN.CENTER)
+                color=NAVY, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
     # 한글
     add_textbox(slide, 0.50, 4.20, 12.30, 0.60,
                 '전 국 책', font_size=32, color=DARKRED, align=PP_ALIGN.CENTER)
@@ -201,10 +201,10 @@ def build_content_slide(prs, page, section, title, subtitle, blocks):
     add_title(slide, title, subtitle)
 
     n = len(blocks)
-    # 본문 영역 (top=2.20 ~ 6.90, height = 4.70)
-    avail_top = 2.20
-    avail_h = 4.85
-    gap = 0.15
+    # 본문 영역 — 더 넓게 (2.10 ~ 7.10, height = 5.00)
+    avail_top = 2.10
+    avail_h = 5.00
+    gap = 0.14
     if n == 0:
         return
     bh = (avail_h - gap * (n - 1)) / n
@@ -216,23 +216,29 @@ def build_content_slide(prs, page, section, title, subtitle, blocks):
 # 표(키-값) 슬라이드
 # ============================================================
 def build_kv_slide(prs, page, section, title, subtitle, rows,
-                   label_w=2.0, row_h=0.58, top_start=2.20):
-    """rows = [(label, value), ...]"""
+                   label_w=2.0, row_h=None, top_start=2.10):
+    """rows = [(label, value), ...] — 행 개수에 따라 row_h 자동 계산."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_header(slide, section, page, TOTAL)
     add_title(slide, title, subtitle)
+    n = len(rows)
+    if row_h is None:
+        avail = 7.10 - top_start
+        row_h = min(0.62, avail / n)
     for i, (lbl, val) in enumerate(rows):
         top = top_start + i * row_h
         # 라벨 박스 (배경)
         add_rect(slide, 0.50, top, label_w + 0.10, row_h - 0.05,
                  fill_color=LBLUE)
-        add_textbox(slide, 0.60, top + 0.08, label_w, row_h - 0.20,
-                    lbl, font_size=13, bold=True, color=DARKRED,
-                    anchor=MSO_ANCHOR.TOP)
+        # 폰트 크기 — 행 높이에 맞춰 작게
+        f_sz = 13 if row_h >= 0.55 else 12
+        add_textbox(slide, 0.60, top + 0.05, label_w, row_h - 0.10,
+                    lbl, font_size=f_sz, bold=True, color=DARKRED,
+                    anchor=MSO_ANCHOR.MIDDLE)
         # 값
-        add_textbox(slide, 0.50 + label_w + 0.25, top + 0.08,
+        add_textbox(slide, 0.50 + label_w + 0.25, top + 0.05,
                     12.80 - label_w - 0.30, row_h - 0.10,
-                    val, font_size=13, color=NAVY, anchor=MSO_ANCHOR.TOP)
+                    val, font_size=f_sz, color=NAVY, anchor=MSO_ANCHOR.MIDDLE)
 
 # ============================================================
 # 명구 슬라이드 — 큰 한자 + 풀이
@@ -243,26 +249,26 @@ def build_quote_slide(prs, page, section, title, subtitle,
     add_header(slide, section, page, TOTAL)
     add_title(slide, title, subtitle)
 
-    # 큰 한자
-    add_rect(slide, 0.50, 2.10, 12.30, 1.40, fill_color=LBLUE)
-    add_textbox(slide, 0.50, 2.20, 12.30, 0.90,
-                hanja_big, font_name=HAN, font_size=40, bold=True,
+    # 큰 한자 (배경 박스)
+    add_rect(slide, 0.50, 2.00, 12.30, 1.50, fill_color=LBLUE)
+    add_textbox(slide, 0.50, 2.05, 12.30, 0.95,
+                hanja_big, font_name=HAN, font_size=38, bold=True,
                 color=NAVY, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-    add_textbox(slide, 0.50, 3.05, 12.30, 0.40,
+    add_textbox(slide, 0.50, 3.00, 12.30, 0.45,
                 korean_read, font_size=15, color=DARKRED,
-                align=PP_ALIGN.CENTER)
+                align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
 
-    # 풀이 패널 3개
-    y = 3.70
-    h = 1.05
-    gap = 0.12
+    # 풀이 패널 3개 — 3.60~7.05
+    y = 3.60
+    h = 1.10
+    gap = 0.05
     for label, body in [('뜻', meaning_block),
                         ('유래', origin_block),
                         ('오늘 우리에게', today_block)]:
         add_rect(slide, 0.50, y, 12.30, h, fill_color=LGREY)
         add_textbox(slide, 0.65, y + 0.10, 2.20, 0.40,
                     label, font_size=12, bold=True, color=DARKRED)
-        add_textbox(slide, 2.90, y + 0.10, 10.30, h - 0.20,
+        add_textbox(slide, 2.90, y + 0.08, 10.30, h - 0.15,
                     body, font_size=13, color=NAVY)
         y += h + gap
 
@@ -274,29 +280,34 @@ def build_final_quote(prs):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_top_band(slide)
     add_bottom_band(slide)
-    add_textbox(slide, 0.50, 1.20, 12.30, 0.50,
-                '전국책의 가장 빛나는 한 구절', font_size=16, color=SLATE,
-                align=PP_ALIGN.CENTER)
-    add_textbox(slide, 0.50, 2.10, 12.30, 1.10,
+    # 부제
+    add_textbox(slide, 0.50, 0.95, 12.30, 0.40,
+                '전국책의 가장 빛나는 한 구절', font_size=15, color=SLATE,
+                align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    # 큰 한자 두 줄 — 60pt, 박스 1.25씩
+    add_textbox(slide, 0.50, 1.55, 12.30, 1.25,
                 '風 蕭 蕭 兮  易 水 寒',
-                font_name=HAN, font_size=72, bold=True, color=NAVY,
+                font_name=HAN, font_size=58, bold=True, color=NAVY,
                 align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-    add_textbox(slide, 0.50, 3.30, 12.30, 1.10,
+    add_textbox(slide, 0.50, 2.90, 12.30, 1.25,
                 '壯 士 一 去 兮  不 復 還',
-                font_name=HAN, font_size=72, bold=True, color=DARKRED,
+                font_name=HAN, font_size=58, bold=True, color=DARKRED,
                 align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-    add_textbox(slide, 0.50, 4.55, 12.30, 0.50,
+    # 한글 풀이
+    add_textbox(slide, 0.50, 4.40, 12.30, 0.50,
                 '바람은 쓸쓸하고 — 역수는 차갑다.', font_size=20,
-                color=NAVY, align=PP_ALIGN.CENTER)
-    add_textbox(slide, 0.50, 5.10, 12.30, 0.50,
+                color=NAVY, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    add_textbox(slide, 0.50, 4.95, 12.30, 0.50,
                 '장사 한 번 가면 — 다시 오지 못한다.', font_size=20,
-                color=NAVY, align=PP_ALIGN.CENTER)
-    add_textbox(slide, 0.50, 6.10, 12.30, 0.40,
+                color=NAVY, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    # 저자·인사
+    add_textbox(slide, 0.50, 6.00, 12.30, 0.40,
                 '— 형가(荊軻) · 진왕 암살을 떠나며',
-                font_size=14, color=SLATE, align=PP_ALIGN.CENTER)
-    add_textbox(slide, 0.50, 6.55, 12.30, 0.40,
+                font_size=14, color=SLATE, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    add_textbox(slide, 0.50, 6.50, 12.30, 0.45,
                 '경청해주셔서 감사합니다',
-                font_size=15, color=DARKRED, align=PP_ALIGN.CENTER, bold=True)
+                font_size=16, color=DARKRED, align=PP_ALIGN.CENTER, bold=True,
+                anchor=MSO_ANCHOR.MIDDLE)
 
 
 # ============================================================
